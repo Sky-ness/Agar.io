@@ -1,6 +1,7 @@
 # sae-2023-groupeG-Duvauchel-Misplon
 
-
+Nom du projet : ...
+Membre du groupe : Antonin Duvauchel - Benoit Misplon 
 
 ## Getting started
 
