@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<title>JSTEAM</title>
+
+	<link rel="icon" href="images/favicon.png" sizes="96x96">
+
+	<link rel="stylesheet" type="text/css" href="css/fonts.css" />
+	<link rel="stylesheet" type="text/css" href="css/animations.css" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<link rel="stylesheet" type="text/css" href="css/header.css" />
+	<link rel="stylesheet" type="text/css" href="css/footer.css" />
+	<link rel="stylesheet" type="text/css" href="css/gameList.css" />
+	<link rel="stylesheet" type="text/css" href="css/help.css" />
+	<link rel="stylesheet" type="text/css" href="css/about.css" />
+	<link rel="stylesheet" type="text/css" href="css/gameDetail.css" />
+
+	<!-- inclusion du fichier js compilé par babel dans le dossier build -->
+	<script src="build/main.bundle.js" defer></script>
+</head>
+<body>
+	<header>
+		<nav>
+			<a href="/" class="logo">
+				<img src="images/logo.svg" />
+				<span><em>JS</em>team</span>
+			</a>
+			<ul class="mainMenu">
+				<li><a href="/" class="gameListLink">Magasin</a></li>
+				<li><a href="/about" class="aboutLink">À propos</a></li>
+				<li><a href="/help" class="helpLink">Support</a></li>
+			</ul>
+		</nav>
+	</header>
+	<section class="viewContainer">
+		<header class="viewTitle"></header>
+		<div class="viewContent activeOnly">
+			<article class="gameList">
+				<header class="searchBar">
+					<button class="toggleSearchButton">Rechercher</button>
+					<form class="searchForm" style="display: none;">
+						<input type="text" name="search" placeholder="Nom du jeu"/>
+						<select name="ordering">
+							<option value="">Tri par pertinence</option>
+							<option value="-metacritic">Tri par note</option>
+							<option value="-released">Tri par date de sortie</option>
+						</select>
+						<button type="submit">Filtrer</button>
+					</form>
+				</header>
+				<section class="results"></section>
+			</article>
+			<article class="gameDetail"></article>
+			<article class="about"></article>
+			<article class="help">
+				<form class="helpForm">
+					<label>
+						Sujet
+						<input type="text" name="subject" />
+					</label>
+					<label>
+						Votre message
+						<textarea name="body" rows="5"></textarea>
+					</label>
+					<button type="submit">Envoyer</button>
+				</form>
+			</article>
+		</div>
+	</section>
+	<footer>
+		<div>
+			Une (incroyable) création originale de <a href="http://uidlt.fr">Thomas Fritsch</a> pour l'<a href="https://www.iut-a.univ-lille.fr/">IUT A</a> de l'<a href="https://www.univ-lille.fr/">Université de Lille</a>
+			<img src="images/logo-iut.png" />
+		</div>
+		<div>Données et images des jeux fournies par <a href="https://rawg.io/apidocs" title="Rawg API">rawg.io</a></div>
+	</footer>
+</body>
+</html>
