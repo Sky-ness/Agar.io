@@ -1,5 +1,5 @@
 import { generateRandomNumber } from './random.js';
-
+import { Circle } from './Circle.js';
 //              initialisation du contexte et canvas
 const canvas = document.querySelector('.gameCanvas'),
     context = canvas.getContext('2d');
@@ -12,63 +12,31 @@ function resampleCanvas() {
 const canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
 canvasResizeObserver.observe(canvas);*/
 
-// Variable de déplacement
-let x = canvas.width/2;
-let y = canvas.height/2;
-let dx = 10;
-let dy = 10;
-
-//                   Avec un canva simple 
-
-
-
-requestAnimationFrame(render);
-setInterval(moveCircle, 1000/60);
-
-function drawCircle(colorFill,colorLine,x,y,taille){
-    context.beginPath();
-    context.fillStyle = ''+colorFill;
-    context.strokeStyle = ''+colorLine;
-    context.lineWidth = 5;
-    context.arc(x, y, taille, 0, 360, false);
-    context.stroke();
-    context.fill();
-}
-function render() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-	
-    
-	
-    generateFood();
-    requestAnimationFrame(render);
-}
-//                déplacement avec les fleches
-document.addEventListener("keydown", (e)=> moveCircle(e.key));
-function moveCircle(direction) {
-	if(direction=="ArrowDown"){
-		y+=dy;
-	}
-	if(direction=="ArrowUp"){
-		y-=dy;
-	}
-	if(direction=="ArrowLeft"){
-		x-=dx;
-	}
-	if(direction=="ArrowRight"){
-		x+=dx;
-	}
-}
+let player = new Circle(generateRandomNumber(0,canvas.width),generateRandomNumber(0,canvas.height),50,'red',context);
+let foods = [];
 
 //              générer les points aléatoirement
 
 function generateFood(){
-	
-    for(let i=0;i<= generateRandomNumber(20,40);i++){
-        drawCircle('green','black',generateRandomNumber(0,canvas.width),generateRandomNumber(0,canvas.height),10);
+	for(let i=0;i<= generateRandomNumber(20,40);i++){
+		foods.push(new Circle(generateRandomNumber(0,canvas.width),generateRandomNumber(0,canvas.height),10,'green',context));
     }
-	
 }
 
+
+
+requestAnimationFrame(render);
+setInterval(player.moveCircle(), 1000/60);
+
+function render() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    generateFood();
+	player.drawCircle();
+	foods.forEach(circle => circle.drawCircle());
+    requestAnimationFrame(render);
+}
+//                déplacement avec les fleches
+document.addEventListener("keydown", (e)=> player.moveCircle(e.key));
 
 let grow = 30;
 let canvasPos = getPosition(canvas);
@@ -138,6 +106,7 @@ function getPosition(el) {
     y: yPos
   };
 }   
+
 
 /*                      Avec une image
 const image = new Image();
