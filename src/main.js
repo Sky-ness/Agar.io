@@ -20,6 +20,8 @@ let dy = 10;
 
 //                   Avec un canva simple 
 
+
+
 requestAnimationFrame(render);
 setInterval(moveCircle, 1000/60);
 
@@ -34,7 +36,9 @@ function drawCircle(colorFill,colorLine,x,y,taille){
 }
 function render() {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    drawCircle('red','black',x,y,30);
+	
+    
+	
     generateFood();
     requestAnimationFrame(render);
 }
@@ -58,10 +62,82 @@ function moveCircle(direction) {
 //              générer les points aléatoirement
 
 function generateFood(){
+	
     for(let i=0;i<= generateRandomNumber(20,40);i++){
         drawCircle('green','black',generateRandomNumber(0,canvas.width),generateRandomNumber(0,canvas.height),10);
     }
+	
 }
+
+
+let grow = 30;
+let canvasPos = getPosition(canvas);
+let mouseX = 0;
+let mouseY = 0;
+let sqSize = 0;
+let xPos = 0;
+let yPos = 0;
+let dX = 0;
+let dY = 0;
+ 
+canvas.addEventListener("mousemove", setMousePosition, false);
+ 
+function setMousePosition(e) {
+  mouseX = e.clientX - canvasPos.x;
+  mouseY = e.clientY - canvasPos.y;
+}
+ 
+function animate() {
+  dX = mouseX - xPos;
+  dY = mouseY - yPos;
+ 
+  xPos += (dX / 10);
+  yPos += (dY / 10);
+ 
+ 
+ 
+
+		drawCircle('red','black',xPos - sqSize / 2,yPos - sqSize / 2,grow);
+		grow = grow + 0.5
+ 
+  requestAnimationFrame(animate);
+}
+animate();
+ 
+// deal with the page getting resized or scrolled
+window.addEventListener("scroll", updatePosition, false);
+window.addEventListener("resize", updatePosition, false);
+ 
+function updatePosition() {
+  canvasPos = getPosition(canvas);
+}
+ 
+// Helper function to get an element's exact position
+function getPosition(el) {
+  let xPos = 0;
+  let yPos = 0;
+ 
+  while (el) {
+    if (el.tagName == "BODY") {
+      // deal with browser quirks with body/window/document and page scroll
+      let xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+      let yScroll = el.scrollTop || document.documentElement.scrollTop;
+ 
+      xPos += (el.offsetLeft - xScroll + el.clientLeft);
+      yPos += (el.offsetTop - yScroll + el.clientTop);
+    } else {
+      // for all other non-BODY elements
+      xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+      yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+    }
+ 
+    el = el.offsetParent;
+  }
+  return {
+    x: xPos,
+    y: yPos
+  };
+}   
 
 /*                      Avec une image
 const image = new Image();
@@ -92,3 +168,7 @@ function moveMonster(direction) {
 	}
 }
 */
+
+
+ 
+
