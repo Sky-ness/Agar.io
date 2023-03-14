@@ -5,7 +5,7 @@ export class Circle{
         this.color=color;
         this.score=score;
         this.color=color
-        this.vitesse=vitesse;
+        this.vitesse= 10;
         this.context=context;
     }
     moveCircle(direction) {
