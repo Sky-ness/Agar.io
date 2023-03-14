@@ -30,6 +30,15 @@ export class Circle{
         this.context.stroke();
         this.context.fill();
     }
+
+    drawPlayer(color,x,y,taille){
+        this.context.beginPath();
+        this.context.fillStyle = "" + this.color;
+        this.context.arc(x,y,taille,0,360, false);
+        this.context.stroke();
+        this.context.fill();
+    }
+
     scoreVariation(){
 
     }
