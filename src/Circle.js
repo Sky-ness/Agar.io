@@ -5,7 +5,7 @@ export class Circle{
         this.color=color;
         this.score=score;
         this.color=color
-        this.vitesse=vitesse;
+        this.vitesse = 5;
         this.context=context;
     }
     moveCircle(direction) {
@@ -30,6 +30,15 @@ export class Circle{
         this.context.stroke();
         this.context.fill();
     }
+
+    drawPlayer(color,x,y,taille){
+        this.context.beginPath();
+        this.context.fillStyle = "" + this.color;
+        this.context.arc(x,y,taille,0,360, false);
+        this.context.stroke();
+        this.context.fill();
+    }
+
     scoreVariation(){
 
     }

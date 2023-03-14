@@ -12,7 +12,7 @@ function resampleCanvas() {
 const canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
 canvasResizeObserver.observe(canvas);*/
 
-let player = new Circle(generateRandomNumber(0,canvas.width),generateRandomNumber(0,canvas.height),50,'red',context);
+let player = new Circle(canvas.width/2,canvas.height/2,50,'red',context);
 let foods = [];
 
 //              générer les points aléatoirement
@@ -24,14 +24,13 @@ function generateFood(){
 }
 
 
-
+generateFood();
 requestAnimationFrame(render);
 setInterval(player.moveCircle(), 1000/60);
 
 function render() {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    generateFood();
-	player.drawCircle();
+	
 	foods.forEach(circle => circle.drawCircle());
     requestAnimationFrame(render);
 }
@@ -55,6 +54,8 @@ function setMousePosition(e) {
   mouseY = e.clientY - canvasPos.y;
 }
  
+
+
 function animate() {
   dX = mouseX - xPos;
   dY = mouseY - yPos;
@@ -64,9 +65,10 @@ function animate() {
  
  
  
-
-		drawCircle('red','black',xPos - sqSize / 2,yPos - sqSize / 2,grow);
-		grow = grow + 0.5
+		
+		
+		player.drawPlayer('red',xPos - sqSize / 2,yPos - sqSize / 2,grow);
+		
  
   requestAnimationFrame(animate);
 }
