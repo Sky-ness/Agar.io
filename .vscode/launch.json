@@ -1,0 +1,48 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Debug server",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": ["run-script", "dev"],
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"env": {
+				"PORT": "8000"
+			}			
+		},		
+		{
+			"name": "Debug on Chrome",
+			"type": "chrome",
+			"request": "launch",
+			"url": "http://localhost:8000",
+			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"name": "Debug on Firefox",
+			"type": "firefox",
+			"request": "launch",
+			"reAttach": true,
+			"port": 8008,
+			"timeout": 25,
+			"url": "http://localhost:8000",
+			"webRoot": "${workspaceFolder}",
+			"pathMappings": [
+				{
+					"url": "webpack://jsteam/src",
+					"path": "${workspaceFolder}/src"
+				},
+				{ "url": "http://localhost:8000/build", "path": null }
+			]
+		}
+		
+	]
+	
+}

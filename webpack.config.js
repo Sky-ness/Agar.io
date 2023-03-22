@@ -1,11 +1,11 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+export default {
 	// Fichier d'entrée :
-	entry: './src/main.js',
+	entry: './client/src/main.js',
 	// Fichier de sortie :
 	output: {
-		path: path.resolve(__dirname, './build'),
+		path: path.resolve(process.cwd(), './client/public/build'),
 		filename: 'main.bundle.js',
 		publicPath: '/build/',
 	},
@@ -28,7 +28,7 @@ module.exports = {
 	devServer: {
 		hot: false, // désactivation hot-reload (inutilisé)
 		static: {
-			directory: './', // racine du serveur http
+			directory: './client/public', // racine du serveur http
 			watch: {
 				// optimisation live-reload
 				ignored: 'node_modules',
