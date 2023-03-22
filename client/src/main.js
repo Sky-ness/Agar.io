@@ -1,5 +1,5 @@
 import { generateRandomNumber } from './random.js';
-import { Circle } from './Circle.js';
+import { Circle } from './View/Class/Circle.js';
 //              initialisation du contexte et canvas
 const canvas = document.querySelector('.gameCanvas'),
     context = canvas.getContext('2d');
