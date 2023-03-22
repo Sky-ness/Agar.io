@@ -16,25 +16,22 @@ function resampleCanvas() {
 const canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
 canvasResizeObserver.observe(canvas);
 
-const colorPicker = this.document.querySelector('.CharacterForm .colorFill');
+const colorPicker = document.querySelector('.colorFill');
 
 //              générer les points aléatoirement
 
 requestAnimationFrame(render);
-setInterval(
-	socket.on('players', players =>
-		players.forEach(element => {
-			drawCircle(element, colorPicker.value);
-		})
-	),
-	1000 / 60
-);
 
 function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	socket.on('foods', foods =>
 		foods.forEach(element => {
 			drawCircle(element, 'vert');
+		})
+	);
+	socket.on('players', players =>
+		players.forEach(element => {
+			drawCircle(element, colorPicker.value);
 		})
 	);
 	requestAnimationFrame(render);

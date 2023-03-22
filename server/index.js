@@ -44,3 +44,5 @@ if (env.PORT == undefined) {
 httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
+
+setInterval(() => {}, 25);
