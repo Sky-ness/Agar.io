@@ -60,8 +60,8 @@ function animate() {
   dX = mouseX - xPos;
   dY = mouseY - yPos;
  
-  xPos += (dX / 10);
-  yPos += (dY / 10);
+  xPos += (dX / 50);
+  yPos += (dY / 50);
  
  
  
