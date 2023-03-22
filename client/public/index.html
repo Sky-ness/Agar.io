@@ -8,7 +8,6 @@
 	<title>Agar.io</title>
 
 	<link rel="icon" href="images/logo.png" sizes="96x96">
-
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
 
 	<!-- inclusion du fichier js compilé par babel dans le dossier build -->
@@ -16,35 +15,35 @@
 </head>
 
 <body>
-	<header>
+	<!-- <header>
 		<nav>
 			<a href="/" class="logo">
 				<img src="images/logo.png" width="100"/>
 				<span><em>Agar</em>.io</span>
 			</a>
 			<ul class="mainMenu">
-				<li><a href="/" class="gameListLink">Acceuil</a></li>
-				<li><a href="/about" class="aboutLink">Tableau des scores</a></li>
+				<li><a href="/" class="gameListLink">Jeu</a></li>
+				<li><a href="/scores" class="aboutLink">Tableau des scores</a></li>
+				<li><a href="/credits" class="aboutLink">Credits</a></li>
 			</ul>
 		</nav>
-	</header>
+	</header> -->
 	<section class="game">
-		<canvas class="gameCanvas" width="600" height="400"></canvas>
+		<canvas class="gameCanvas"></canvas>
 	</section>
-	<section>
+	<!-- <section>
 		<article class="Character">
 			<form class="CharacterForm">
 				<label>Votre pseudo</label>
 				<input type="text" name="pseudo" />
 				<label for="color-picker">Choisir une couleur de remplissage :</label>
-				<input type="color" name="colorFill">
+				<input type="color" class="colorFill">
 				<label for="color-picker">Choisir une couleur de ligne :</label>
-				<input type="color" name="colorLine">
+				<input type="color" class="colorLine">
 				<button type="submit">Valider</button>
 			</form>
 		</article>
-		</div>
-	</section>
+	</section> -->
 	<footer>
 
 	</footer>
