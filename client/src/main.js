@@ -6,15 +6,16 @@ import { io } from 'socket.io-client';
 const canvas = document.querySelector('.gameCanvas'),
 	context = canvas.getContext('2d');
 //                   initialisation du serveur
+
 const socket = io();
 
-/*                   resize du canvas 
+//              resize du canvas
 function resampleCanvas() {
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+	canvas.width = canvas.clientWidth;
+	canvas.height = canvas.clientHeight;
 }
 const canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
-canvasResizeObserver.observe(canvas);*/
+canvasResizeObserver.observe(canvas);
 
 let player = new Circle(
 	canvas.width / 2,
@@ -59,7 +60,7 @@ let grow = 30;
 let canvasPos = getPosition(canvas);
 let mouseX = 0;
 let mouseY = 0;
-
+let sqSize = 0;
 let xPos = 0;
 let yPos = 0;
 let dX = 0;
@@ -73,11 +74,23 @@ function setMousePosition(e) {
 }
 
 function animate() {
-	dX = mouseX - xPos;
-	dY = mouseY - yPos;
+	if (mouseX - xPos > 50) {
+		dX = 50;
+	} else if (mouseX - xPos < -50) {
+		dX = -50;
+	} else {
+		dX = mouseX - xPos;
+	}
+	if (mouseY - yPos > 50) {
+		dY = 50;
+	} else if (mouseY - yPos < -50) {
+		dY = -50;
+	} else {
+		dY = mouseY - yPos;
+	}
 
-	xPos += dX / 10;
-	yPos += dY / 10;
+	xPos += dX / 15;
+	yPos += dY / 15;
 
 	player.drawPlayer('red', xPos - sqSize / 2, yPos - sqSize / 2, grow);
 
@@ -119,3 +132,63 @@ function getPosition(el) {
 		y: yPos,
 	};
 }
+
+/*
+// Création d'un vecteur
+class Vector {
+	constructor(x, y) {
+		this.x = x || 0;
+		this.y = y || 0;
+	}
+
+	add(v) {
+		return new Vector(this.x + v.x, this.y + v.y);
+	}
+
+	subtract(v) {
+		return new Vector(this.x - v.x, this.y - v.y);
+	}
+}
+
+// Récupération du canvas et du contexte 2D
+const canvas = document.querySelector('.gameCanvas');
+const context = canvas.getContext('2d');
+
+// Création du cercle et du vecteur de position
+const circle = {
+	position: new Vector(canvas.width / 2, canvas.height / 2),
+	radius: 50,
+};
+
+// Ajout d'un listener d'événement sur le canvas pour suivre la souris
+canvas.addEventListener('mousemove', event => {
+	circle.position = new Vector(
+		event.clientX - canvas.offsetLeft,
+		event.clientY - canvas.offsetTop
+	);
+});
+
+// Fonction de mise à jour pour dessiner le cercle sur le canvas
+function update() {
+	// Effacer le canvas
+	context.clearRect(0, 0, canvas.width, canvas.height);
+
+	// Dessiner le cercle
+	context.beginPath();
+	context.arc(
+		circle.position.x,
+		circle.position.y,
+		circle.radius,
+		0,
+		2 * Math.PI
+	);
+	context.fillStyle = 'blue';
+	context.fill();
+
+	// Demander une nouvelle mise à jour à la prochaine frame
+	requestAnimationFrame(update);
+}
+
+// Démarrage de la boucle de mise à jour
+requestAnimationFrame(update);
+*/

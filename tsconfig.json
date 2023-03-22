@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"rootDirs": ["server/src", "."],
+		"outDir": "server/build",
+		"target": "ES6",
+		"module": "CommonJS",
+		"noEmitOnError": true,
+		"sourceMap": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"allowJs": true,
+		"strict": true,
+	},
+	"exclude": ["./node_modules", "./client", "./server/build", "build"]
+}
