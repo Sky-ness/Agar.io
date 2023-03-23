@@ -23,23 +23,27 @@ io.on('connection', socket => {
 		// On supprime le joueur de la liste principale quand il se déconnecte
 		players = players.filter(player => player.pseudo !== '' + socket.id);
 		// On envoie les informations a tout les autres joueurs foods players restants et on nettoie le canva
+		console.log(players);
 		io.emit('deconnexion');
 		io.emit('foods', foods);
 		io.emit('players', players);
 	});
 	// A la connection du joueur on créer un nouveau joueur sur le plateau
-	players.push(
-		new Circle(
-			socket.id,
-			generateRandomNumber(0, 1000),
-			generateRandomNumber(0, 500),
-			20
-		)
-	);
-	setInterval(() => {
-		io.emit('foods', foods);
+	socket.on('play', () => {
+		players.push(
+			new Circle(
+				socket.id,
+				generateRandomNumber(0, 1000),
+				generateRandomNumber(0, 500),
+				20
+			)
+		);
+		console.log(players);
 		io.emit('players', players);
-	}, 25);
+	});
+	// setInterval(() => {
+	io.emit('foods', foods);
+	// }, 25);
 });
 
 //			Système de déplacement (a implémeneter)

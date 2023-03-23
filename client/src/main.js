@@ -27,16 +27,23 @@ function resampleCanvas() {
 // const playView = new PlayView(document.querySelector('.game'));
 
 //			temporaire le temps que les vues ne fonctionne pas encore
-document.querySelector('.characterForm').style.display = 'none';
+//
 document.querySelector('.replay').style.display = 'none';
 document.querySelector('.scoreBoard').style.display = 'none';
 
 const button = document.querySelector('.characterForm button');
 const pseudo = document.querySelector('.characterForm .pseudo');
-const color = document.querySelector('.characterForm .color');
+const colorPicker = document.querySelector('.characterForm .color');
+
+let selectedColor = 'red';
+colorPicker.addEventListener('change', function () {
+	selectedColor = colorPicker.value;
+});
+
 button.addEventListener('click', event => {
 	event.preventDefault();
-	socket.emit('pseudo', pseudo.value);
+	socket.emit('play');
+	document.querySelector('.characterForm').style.display = 'none';
 });
 //-------------------------------------------------------------------------------
 
@@ -44,12 +51,12 @@ requestAnimationFrame(render);
 function render() {
 	socket.on('foods', foods =>
 		foods.forEach(element => {
-			drawCircle(element, 'green');
+			drawCircle(element, 'green', pseudo);
 		})
 	);
 	socket.on('players', players =>
 		players.forEach(element => {
-			drawCircle(element, color.value);
+			drawCircle(element, selectedColor, pseudo);
 		})
 	);
 	socket.on('deconnexion', () =>
@@ -59,11 +66,14 @@ function render() {
 	requestAnimationFrame(render);
 }
 
-function drawCircle(circle, color) {
+function drawCircle(circle, color /*pseudo*/) {
 	context.beginPath();
 	context.fillStyle = '' + color;
 	context.lineWidth = 5;
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
+	// context.font = '10px Arial';
+	// context.fillStyle = 'black';
+	// context.fillText(pseudo, 100, 110);
 	context.stroke();
 	context.fill();
 }
