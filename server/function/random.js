@@ -4,10 +4,10 @@ export function randomFood() {
 	for (let i = 0; i <= generateRandomNumber(70, 80); i++) {
 		foods.push(
 			new Circle(
-				generateRandomNumber(0, window.innerWidth),
-				generateRandomNumber(0, window.innerHeight),
-				10,
-				'green'
+				'foods',
+				generateRandomNumber(0, 1000),
+				generateRandomNumber(0, 500),
+				10
 			)
 		);
 	}
