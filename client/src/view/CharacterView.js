@@ -1,4 +1,5 @@
-class CharacterView extends View {
+import View from './View.js';
+export default class CharacterView extends View {
 	color;
 	pseudo;
 

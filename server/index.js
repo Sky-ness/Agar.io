@@ -36,12 +36,13 @@ io.on('connection', socket => {
 			20
 		)
 	);
-	io.emit('foods', foods);
-	io.emit('players', players);
+	setInterval(() => {
+		io.emit('foods', foods);
+		io.emit('players', players);
+	}, 25);
 });
 
 //			Système de déplacement (a implémeneter)
-setInterval(() => {}, 25);
 
 // 					page principal du jeu
 app.get('/', app.use(express.static('client/public')));

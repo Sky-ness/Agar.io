@@ -1,4 +1,5 @@
-class ScoreBoardView extends View {
+import View from './View.js';
+export default class ScoreBoardView extends View {
 	constructor(element) {
 		super(element);
 	}

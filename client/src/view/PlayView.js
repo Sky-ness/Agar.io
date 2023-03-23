@@ -1,5 +1,6 @@
-// a implémenter
-class PlayView extends View {
+import View from './View.js';
+export default class PlayView extends View {
+	// a implémenter
 	constructor(element) {
 		super(element);
 	}

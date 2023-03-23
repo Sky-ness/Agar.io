@@ -4,9 +4,15 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-
 	<title>Agar.io</title>
-
+	<style>
+		canvas {
+			background-color: white;
+			border: 3px dashed #777;
+			width: 100%;
+		 	height: 100%;
+		}
+	</style>
 	<link rel="icon" href="images/logo.png" sizes="96x96">
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
 
@@ -18,7 +24,7 @@
 	<!-- <header>
 		<nav>
 			<a href="/" class="logo">
-				<img src="images/logo.png" width="100"/>
+				<img src="images/logo.png" width="100" />
 				<span><em>Agar</em>.io</span>
 			</a>
 			<ul class="mainMenu">
@@ -28,25 +34,31 @@
 			</ul>
 		</nav>
 	</header> -->
-	<section class="game">
-		<canvas class="gameCanvas"></canvas>
+	<section class="view">
+		<article class="game">
+			<canvas class="gameCanvas" width="1500" height="700"></canvas>
+		</article>
+		<article class="character">
+			<form class="characterForm">
+				<label>Votre pseudo</label>
+				<input type="text" class="pseudo" />
+				<label for="color-picker">Choisir une couleur de remplissage :</label>
+				<input type="color" class="color">
+				<button type="submit">Valider</button>
+			</form>
+		</article>
+		<article class="replay">
+			<button type="submit">Replay</button>
+		</article>
+		<article class="scoreBoard">
+			<table>
+			</table>
+		</article>
 	</section>
-	<section>
-		<form class="characterForm">
-			<label>Votre pseudo</label>
-			<input type="text" class="pseudo" />
-			<label for="color-picker">Choisir une couleur de remplissage :</label>
-			<input type="color" class="color">
-			<button type="submit">Valider</button>
-		</form>
-	</section>
-	<section class="replay">
-		<button type="submit">Replay</button> 
-	</section>
-	<section>
-		<table class="scoreBoard">
-		</table>
-	</section>
+
+	<footer>
+
+	</footer>
 </body>
 
 </html>
