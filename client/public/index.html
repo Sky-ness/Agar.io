@@ -4,11 +4,16 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-
 	<title>Agar.io</title>
-
+	<style>
+		canvas {
+			background-color: white;
+			border: 3px dashed #777;
+			width: 100%;
+		 	height: 100%;
+		}
+	</style>
 	<link rel="icon" href="images/logo.png" sizes="96x96">
-
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
 
 	<!-- inclusion du fichier js compilé par babel dans le dossier build -->
@@ -16,35 +21,42 @@
 </head>
 
 <body>
-	<header>
+	<!-- <header>
 		<nav>
 			<a href="/" class="logo">
-				<img src="images/logo.png" width="100"/>
+				<img src="images/logo.png" width="100" />
 				<span><em>Agar</em>.io</span>
 			</a>
 			<ul class="mainMenu">
-				<li><a href="/" class="gameListLink">Acceuil</a></li>
-				<li><a href="/about" class="aboutLink">Tableau des scores</a></li>
+				<li><a href="/" class="gameListLink">Jeu</a></li>
+				<li><a href="/scores" class="aboutLink">Tableau des scores</a></li>
+				<li><a href="/credits" class="aboutLink">Credits</a></li>
 			</ul>
 		</nav>
-	</header>
-	<section class="game">
-		<canvas class="gameCanvas" width="1500" height="900"></canvas>
-	</section>
-	<section>
-		<article class="Character">
-			<form class="CharacterForm">
+	</header> -->
+	<section class="view">
+		<article class="game">
+			<canvas class="gameCanvas" width="1500" height="700"></canvas>
+		</article>
+		<article class="character">
+			<form class="characterForm">
 				<label>Votre pseudo</label>
-				<input type="text" name="pseudo" />
+				<input type="text" class="pseudo" />
 				<label for="color-picker">Choisir une couleur de remplissage :</label>
-				<input type="color" name="colorFill">
-				<label for="color-picker">Choisir une couleur de ligne :</label>
-				<input type="color" name="colorLine">
-				<button type="submit">Valider</button>
+				<input type="color" class="color">
+				<button type="submit">Play</button>
 			</form>
 		</article>
-		</div>
+		<article class="replay">
+			<button type="submit">Replay</button>
+		</article>
+		<article>
+			<table class="scoreBoard">
+				<tr><th>pseudo</th><th>score</th></tr>
+			</table>
+		</article>
 	</section>
+
 	<footer>
 
 	</footer>

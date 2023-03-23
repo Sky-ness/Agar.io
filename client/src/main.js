@@ -1,102 +1,93 @@
-import { generateRandomNumber } from './function/random.js';
-import { Circle } from './class/Circle.js';
 import { io } from 'socket.io-client';
-
+import CharacterView from './view/characterView.js';
+import ScoreBoardView from './view/ScoreBoardView.js';
+import ReplayView from './view/replayView.js';
+import PlayView from './view/PlayView.js';
 //              initialisation du contexte et canvas
 const canvas = document.querySelector('.gameCanvas'),
 	context = canvas.getContext('2d');
-//                   initialisation du serveur
 
+//TODO faire le canva a la taille de la fenetre
+//                   initialisation du serveur coté client
 const socket = io();
 
-//              resize du canvas
+//                   resize du canvas
+const canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
+canvasResizeObserver.observe(canvas);
+
 function resampleCanvas() {
 	canvas.width = canvas.clientWidth;
 	canvas.height = canvas.clientHeight;
 }
-const canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
-canvasResizeObserver.observe(canvas);
 
-let player = new Circle(
-	canvas.width / 2,
-	canvas.height / 2,
-	50,
-	'red',
-	context
-);
-let foods = [];
+// 							generate view
+// const characterView = new CharacterView(document.querySelector('.characterForm'));
+// const scoreBoardView = new ScoreBoardView(document.querySelector('.scoreBoard'));
+// const replayView = new ReplayView(document.querySelector('.replay'));
+// const playView = new PlayView(document.querySelector('.game'));
 
-//              générer les points aléatoirement
+//			temporaire le temps que les vues ne fonctionne pas encore
+//
+document.querySelector('.replay').style.display = 'none';
+// document.querySelector('.scoreBoard').style.display = 'none';
 
-generateFood();
+// 					character chooser
+const button = document.querySelector('.characterForm button');
+const pseudo = document.querySelector('.characterForm .pseudo');
+const colorPicker = document.querySelector('.characterForm .color');
+
+let selectedColor = 'red';
+colorPicker.addEventListener('change', function () {
+	selectedColor = colorPicker.value;
+});
+
+button.addEventListener('click', event => {
+	event.preventDefault();
+	socket.emit('play');
+	document.querySelector('.characterForm').style.display = 'none';
+	// document.querySelector('.scoreBoard').style.display = 'block';
+});
+
+// 						scoreBoard
+const scoreBoard = document.querySelector('.scoreBoard');
+socket.on('players', players => {
+	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
+	players.forEach(player => {
+		scoreBoard.innerHTML += `<tr><td>${player.pseudo}</td><td>${player.score}</td></tr>`;
+	});
+});
+//-------------------------------------------------------------------------------
+
 requestAnimationFrame(render);
-setInterval(player.moveCircle(), 1000 / 60);
-
 function render() {
-	context.clearRect(0, 0, canvas.width, canvas.height);
-	foods.forEach(circle => circle.drawCircle());
+	socket.on('foods', foods =>
+		foods.forEach(element => {
+			drawCircle(element, 'green', pseudo);
+		})
+	);
+	socket.on('players', players =>
+		players.forEach(element => {
+			drawCircle(element, selectedColor, pseudo);
+		})
+	);
+	socket.on('deconnexion', () =>
+		context.clearRect(0, 0, canvas.width, canvas.height)
+	);
+	// context.clearRect(0, 0, canvas.width, canvas.height);
 	requestAnimationFrame(render);
 }
 
-function generateFood() {
-	for (let i = 0; i <= generateRandomNumber(70, 80); i++) {
-		foods.push(
-			new Circle(
-				generateRandomNumber(0, canvas.width),
-				generateRandomNumber(0, canvas.height),
-				10,
-				'green',
-				context
-			)
-		);
-	}
+function drawCircle(circle, color /*pseudo*/) {
+	context.beginPath();
+	context.fillStyle = '' + color;
+	context.lineWidth = 5;
+	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
+	// context.font = '10px Arial';
+	// context.fillStyle = 'black';
+	// context.fillText(pseudo, 100, 110);
+	context.stroke();
+	context.fill();
 }
-
-//                déplacement
-
-document.addEventListener('keydown', e => player.moveCircle(e.key));
-
-let grow = 30;
-let canvasPos = getPosition(canvas);
-let mouseX = 0;
-let mouseY = 0;
-let sqSize = 0;
-let xPos = 0;
-let yPos = 0;
-let dX = 0;
-let dY = 0;
-
-canvas.addEventListener('mousemove', setMousePosition, false);
-
-function setMousePosition(e) {
-	mouseX = e.clientX - canvasPos.x;
-	mouseY = e.clientY - canvasPos.y;
-}
-
-function animate() {
-	if (mouseX - xPos > 50) {
-		dX = 50;
-	} else if (mouseX - xPos < -50) {
-		dX = -50;
-	} else {
-		dX = mouseX - xPos;
-	}
-	if (mouseY - yPos > 50) {
-		dY = 50;
-	} else if (mouseY - yPos < -50) {
-		dY = -50;
-	} else {
-		dY = mouseY - yPos;
-	}
-
-	xPos += dX / 15;
-	yPos += dY / 15;
-
-	player.drawPlayer('red', xPos - sqSize / 2, yPos - sqSize / 2, grow);
-
-	requestAnimationFrame(animate);
-}
-animate();
 
 // deal with the page getting resized or scrolled
 window.addEventListener('scroll', updatePosition, false);
@@ -132,63 +123,3 @@ function getPosition(el) {
 		y: yPos,
 	};
 }
-
-/*
-// Création d'un vecteur
-class Vector {
-	constructor(x, y) {
-		this.x = x || 0;
-		this.y = y || 0;
-	}
-
-	add(v) {
-		return new Vector(this.x + v.x, this.y + v.y);
-	}
-
-	subtract(v) {
-		return new Vector(this.x - v.x, this.y - v.y);
-	}
-}
-
-// Récupération du canvas et du contexte 2D
-const canvas = document.querySelector('.gameCanvas');
-const context = canvas.getContext('2d');
-
-// Création du cercle et du vecteur de position
-const circle = {
-	position: new Vector(canvas.width / 2, canvas.height / 2),
-	radius: 50,
-};
-
-// Ajout d'un listener d'événement sur le canvas pour suivre la souris
-canvas.addEventListener('mousemove', event => {
-	circle.position = new Vector(
-		event.clientX - canvas.offsetLeft,
-		event.clientY - canvas.offsetTop
-	);
-});
-
-// Fonction de mise à jour pour dessiner le cercle sur le canvas
-function update() {
-	// Effacer le canvas
-	context.clearRect(0, 0, canvas.width, canvas.height);
-
-	// Dessiner le cercle
-	context.beginPath();
-	context.arc(
-		circle.position.x,
-		circle.position.y,
-		circle.radius,
-		0,
-		2 * Math.PI
-	);
-	context.fillStyle = 'blue';
-	context.fill();
-
-	// Demander une nouvelle mise à jour à la prochaine frame
-	requestAnimationFrame(update);
-}
-
-// Démarrage de la boucle de mise à jour
-requestAnimationFrame(update);
-*/
