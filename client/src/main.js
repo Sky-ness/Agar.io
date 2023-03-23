@@ -29,8 +29,9 @@ function resampleCanvas() {
 //			temporaire le temps que les vues ne fonctionne pas encore
 //
 document.querySelector('.replay').style.display = 'none';
-document.querySelector('.scoreBoard').style.display = 'none';
+// document.querySelector('.scoreBoard').style.display = 'none';
 
+// 					character chooser
 const button = document.querySelector('.characterForm button');
 const pseudo = document.querySelector('.characterForm .pseudo');
 const colorPicker = document.querySelector('.characterForm .color');
@@ -44,6 +45,16 @@ button.addEventListener('click', event => {
 	event.preventDefault();
 	socket.emit('play');
 	document.querySelector('.characterForm').style.display = 'none';
+	// document.querySelector('.scoreBoard').style.display = 'block';
+});
+
+// 						scoreBoard
+const scoreBoard = document.querySelector('.scoreBoard');
+socket.on('players', players => {
+	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
+	players.forEach(player => {
+		scoreBoard.innerHTML += `<tr><td>${player.pseudo}</td><td>${player.score}</td></tr>`;
+	});
 });
 //-------------------------------------------------------------------------------
 
