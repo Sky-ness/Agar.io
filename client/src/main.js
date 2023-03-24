@@ -110,6 +110,21 @@ let yPos = 0;
 let dX = 0;
 let dY = 0;
 
+function eatFood(food, player) {
+	let rayJ = player.score;
+	let rayF = food.score;
+	let a = player.score + food.score;
+	let x = player.x - food.x;
+	let y = player.y - food.y;
+
+	if (rayJ > Math.sqrt(x * x + y * y) + rayF) {
+		player.score += 2;
+		return true;
+	} else {
+		return false;
+	}
+}
+
 canvas.addEventListener('mousemove', setMousePosition, false);
 
 function setMousePosition(e) {
@@ -163,6 +178,11 @@ function animate() {
 		element.x = xPos - sqSize / 2;
 		element.y = yPos - sqSize / 2;
 		drawCircle(element, selectedColor);
+		food.forEach(el => {
+			if (eatFood(el, element)) {
+				food = food.filter(food => food != el);
+			}
+		});
 	});
 	socket.emit('joueurs', joueurs);
 
