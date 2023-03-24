@@ -76,9 +76,9 @@ function render() {
 	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
 	// console.log(mapC);
 	socket.emit('mousePosition', mouse);
-	mapC.players.forEach(player => {
-		scoreBoard.innerHTML += `<tr><td>${player.pseudo}</td><td>${player.score}</td></tr>`;
-	});
+	for (let i = mapC.players.length - 1; i >= 0; i--) {
+		scoreBoard.innerHTML += `<tr><td>${mapC.players[i].pseudo}</td><td>${mapC.players[i].score}</td></tr>`;
+	}
 	mapC.foods.forEach(element => {
 		drawCircle(element, 'green');
 	});

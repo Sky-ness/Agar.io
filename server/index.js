@@ -24,24 +24,24 @@ io.on('connection', socket => {
 		mapS.removePlayer(socket.id);
 	});
 	// A la connection du joueur on créer un nouveau joueur sur le plateau
-	socket.on('mousePosition', mouse => {
-		let move2 = move(mouse.x, mouse.y);
-		mapS.players[0].setPosition(move2.x, move2.y);
+	socket.on('play', () => {
+		mapS.addPlayer(
+			new Circle(
+				socket.id,
+				generateRandomNumber(0, mapS.width),
+				generateRandomNumber(0, mapS.height),
+				generateRandomNumber(20, 50)
+			)
+		);
+		socket.on('mousePosition', mouse => {
+			let moveD = move(mouse.x, mouse.y);
+			mapS.getPlayer(socket.id).setPosition(moveD.x, moveD.y);
+		});
+		setInterval(() => {
+			mapS.sortPlayer();
+			io.emit('map', mapS);
+		}, 25);
 	});
-	// socket.on('play', () => {
-	mapS.addPlayer(
-		new Circle(
-			socket.id,
-			generateRandomNumber(0, mapS.width),
-			generateRandomNumber(0, mapS.height),
-			20
-		)
-	);
-	// console.log(mapS.players);
-	setInterval(() => {
-		io.emit('map', mapS);
-	}, 25);
-	// });
 });
 
 //			Système de déplacement (a implémeneter)
