@@ -1,9 +1,5 @@
 import { io } from 'socket.io-client';
-import { Maps } from '../../server/class/Maps.js';
-import CharacterView from './view/CharacterView.js';
-import ScoreBoardView from './view/ScoreBoardView.js';
-import ReplayView from './view/ReplayView.js';
-import PlayView from './view/PlayView.js';
+
 //              initialisation du contexte et canvas
 const canvas = document.querySelector('.gameCanvas'),
 	context = canvas.getContext('2d');
@@ -93,24 +89,19 @@ function drawCircle(circle, color /*pseudo*/) {
 	context.stroke();
 }
 
-
-
 //-----------------------------------------------------
 
 // Les mouvements meme si ils sont guèze pour le moment
 
 let joueurs = [];
 
+let food = [];
 
-
-	let food = [];
-
-socket.on('foods', foods =>{
+socket.on('foods', foods => {
 	foods.forEach(element => {
 		food.push(element);
-		
-	})}
-	);
+	});
+});
 
 let grow = 30;
 let canvasPos = getPosition(canvas);
@@ -122,6 +113,21 @@ let yPos = 0;
 let dX = 0;
 let dY = 0;
 
+function eatFood(food, player) {
+	let rayJ = player.score;
+	let rayF = food.score;
+	let a = player.score + food.score;
+	let x = player.x - food.x;
+	let y = player.y - food.y;
+
+	if (rayJ > Math.sqrt(x * x + y * y) + rayF) {
+		player.score += 2;
+		return true;
+	} else {
+		return false;
+	}
+}
+
 canvas.addEventListener('mousemove', setMousePosition, false);
 
 function setMousePosition(e) {
@@ -129,64 +135,60 @@ function setMousePosition(e) {
 	mouseY = e.clientY - canvasPos.y;
 	//console.log("X :" + mouseX + " Y : " + mouseY)
 }
-let speedX =50;
-let speedY =50;
+let speedX = 50;
+let speedY = 50;
 function animate() {
-	socket.on('players', players =>{
+	socket.on('players', players => {
 		joueurs = [];
 		players.forEach(element => {
-			
 			joueurs.push(element);
-			
-		})}
-		);
+		});
+	});
 	if (mouseX - xPos > 300) {
-		speedX = 300
+		speedX = 300;
 	} else if (mouseX - xPos < -300) {
 		speedX = 300;
-	}
-	else if (mouseX - xPos > 100) {
-		speedX = 200
+	} else if (mouseX - xPos > 100) {
+		speedX = 200;
 	} else if (mouseX - xPos < -100) {
 		speedX = 200;
 	} else {
-		speedX=100
+		speedX = 100;
 	}
 	if (mouseY - yPos > 300) {
-		speedY = 300
-		
+		speedY = 300;
 	} else if (mouseY - yPos < -300) {
-		speedY = 300
-	}
-	 else if (mouseY - yPos > 100) {
-		speedY = 200
-		
+		speedY = 300;
+	} else if (mouseY - yPos > 100) {
+		speedY = 200;
 	} else if (mouseY - yPos < -100) {
-		speedY = 200
+		speedY = 200;
 	} else {
 		speedY = 100;
 	}
-	
+
 	dX = mouseX - xPos;
 	dY = mouseY - yPos;
-	
+
 	xPos += dX / speedX;
 	yPos += dY / speedY;
-	
-	
+
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	food.forEach(element => {
-		
-		drawCircle(element,  'green');
-	})
+		drawCircle(element, 'green');
+	});
 	joueurs.forEach(element => {
-		
-		element.x = xPos - sqSize/2;
+		element.x = xPos - sqSize / 2;
 		element.y = yPos - sqSize / 2;
 		drawCircle(element, selectedColor);
-	})
-	socket.emit("joueurs",joueurs);
-	
+		food.forEach(el => {
+			if (eatFood(el, element)) {
+				food = food.filter(food => food != el);
+			}
+		});
+	});
+	socket.emit('joueurs', joueurs);
+
 	requestAnimationFrame(animate);
 }
 animate();
