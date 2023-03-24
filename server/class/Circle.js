@@ -5,6 +5,8 @@ export class Circle {
 		this.y = y;
 		this.score = score;
 	}
-
-	scoreVariation() {}
+	setPosition(x, y) {
+		this.x = x;
+		this.y = y;
+	}
 }

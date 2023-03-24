@@ -28,4 +28,18 @@ export class Maps {
 	removePlayer(pseudo) {
 		this.players = this.players.filter(player => player.pseudo !== '' + pseudo);
 	}
+	feed(circle1, circle2) {
+		let rayJ = circle1.score;
+		let rayF = circle2.score;
+		let a = circle1.score + circle2.score;
+		let x = circle1.x - circle2.x;
+		let y = circle1.y - circle2.y;
+
+		if (rayJ > Math.sqrt(x * x + y * y) + rayF) {
+			player.score += 2;
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

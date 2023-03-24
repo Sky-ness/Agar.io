@@ -60,11 +60,22 @@ socket.on('deconnexion', () =>
 	context.clearRect(0, 0, canvas.width, canvas.height)
 );
 
+let mouse = { x: 0, y: 0 };
+let canvasPos = getPosition(canvas);
+
+function setMousePosition(e) {
+	mouse = { x: e.clientX - canvasPos.x, y: e.clientY - canvasPos.y };
+}
+
+canvas.addEventListener('mousemove', event => setMousePosition(event));
+
 requestAnimationFrame(render);
+
 function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
-	console.log(mapC);
+	// console.log(mapC);
+	socket.emit('mousePosition', mouse);
 	mapC.players.forEach(player => {
 		scoreBoard.innerHTML += `<tr><td>${player.pseudo}</td><td>${player.score}</td></tr>`;
 	});
@@ -89,136 +100,29 @@ function drawCircle(circle, color /*pseudo*/) {
 	context.stroke();
 }
 
-//-----------------------------------------------------
-
-// Les mouvements meme si ils sont guèze pour le moment
-
-let joueurs = [];
-
-let food = [];
-
-socket.on('foods', foods => {
-	foods.forEach(element => {
-		food.push(element);
-	});
-});
-
-let grow = 30;
-let canvasPos = getPosition(canvas);
-let mouseX = 0;
-let mouseY = 0;
-let sqSize = 0;
-let xPos = 0;
-let yPos = 0;
-let dX = 0;
-let dY = 0;
-
-function eatFood(food, player) {
-	let rayJ = player.score;
-	let rayF = food.score;
-	let a = player.score + food.score;
-	let x = player.x - food.x;
-	let y = player.y - food.y;
-
-	if (rayJ > Math.sqrt(x * x + y * y) + rayF) {
-		player.score += 2;
-		return true;
-	} else {
-		return false;
-	}
-}
-
-canvas.addEventListener('mousemove', setMousePosition, false);
-
-function setMousePosition(e) {
-	mouseX = e.clientX - canvasPos.x;
-	mouseY = e.clientY - canvasPos.y;
-	//console.log("X :" + mouseX + " Y : " + mouseY)
-}
-let speedX = 50;
-let speedY = 50;
-function animate() {
-	socket.on('players', players => {
-		joueurs = [];
-		players.forEach(element => {
-			joueurs.push(element);
-		});
-	});
-	if (mouseX - xPos > 300) {
-		speedX = 300;
-	} else if (mouseX - xPos < -300) {
-		speedX = 300;
-	} else if (mouseX - xPos > 100) {
-		speedX = 200;
-	} else if (mouseX - xPos < -100) {
-		speedX = 200;
-	} else {
-		speedX = 100;
-	}
-	if (mouseY - yPos > 300) {
-		speedY = 300;
-	} else if (mouseY - yPos < -300) {
-		speedY = 300;
-	} else if (mouseY - yPos > 100) {
-		speedY = 200;
-	} else if (mouseY - yPos < -100) {
-		speedY = 200;
-	} else {
-		speedY = 100;
-	}
-
-	dX = mouseX - xPos;
-	dY = mouseY - yPos;
-
-	xPos += dX / speedX;
-	yPos += dY / speedY;
-
-	context.clearRect(0, 0, canvas.width, canvas.height);
-	food.forEach(element => {
-		drawCircle(element, 'green');
-	});
-	joueurs.forEach(element => {
-		element.x = xPos - sqSize / 2;
-		element.y = yPos - sqSize / 2;
-		drawCircle(element, selectedColor);
-	});
-	socket.emit('joueurs', joueurs);
-
-	requestAnimationFrame(animate);
-}
-animate();
-
-// deal with the page getting resized or scrolled
-window.addEventListener('scroll', updatePosition, false);
-window.addEventListener('resize', updatePosition, false);
-
-function updatePosition() {
-	canvasPos = getPosition(canvas);
-}
-
-// Helper function to get an element's exact position
-function getPosition(el) {
+function getPosition(canva) {
 	let xPos = 0;
 	let yPos = 0;
 
-	while (el) {
-		if (el.tagName == 'BODY') {
+	while (canva) {
+		if (canva.tagName == 'BODY') {
 			// deal with browser quirks with body/window/document and page scroll
-			let xScroll = el.scrollLeft || document.documentElement.scrollLeft;
-			let yScroll = el.scrollTop || document.documentElement.scrollTop;
+			let xScroll = canva.scrollLeft || document.documentElement.scrollLeft;
+			let yScroll = canva.scrollTop || document.documentElement.scrollTop;
 
-			xPos += el.offsetLeft - xScroll + el.clientLeft;
-			yPos += el.offsetTop - yScroll + el.clientTop;
+			xPos += canva.offsetLeft - xScroll + canva.clientLeft;
+			yPos += canva.offsetTop - yScroll + canva.clientTop;
 		} else {
 			// for all other non-BODY elements
-			xPos += el.offsetLeft - el.scrollLeft + el.clientLeft;
-			yPos += el.offsetTop - el.scrollTop + el.clientTop;
+			xPos += canva.offsetLeft - canva.scrollLeft + canva.clientLeft;
+			yPos += canva.offsetTop - canva.scrollTop + canva.clientTop;
 		}
-
-		el = el.offsetParent;
+		canva = canva.offsetParent;
 	}
 	return {
 		x: xPos,
 		y: yPos,
 	};
 }
+
+//-----------------------------------------------------
