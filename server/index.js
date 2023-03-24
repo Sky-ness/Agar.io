@@ -39,11 +39,11 @@ io.on('connection', socket => {
 			)
 		);
 		console.log(players);
+		//setInterval(() => {
 		io.emit('players', players);
+		//}, 25);
 	});
-	// setInterval(() => {
 	io.emit('foods', foods);
-	// }, 25);
 });
 
 //			Système de déplacement (a implémeneter)

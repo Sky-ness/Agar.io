@@ -60,6 +60,7 @@ socket.on('players', players => {
 
 requestAnimationFrame(render);
 function render() {
+	//context.clearRect(0, 0, canvas.width, canvas.height);
 	socket.on('foods', foods =>
 		foods.forEach(element => {
 			drawCircle(element, 'green', pseudo);
@@ -73,7 +74,6 @@ function render() {
 	socket.on('deconnexion', () =>
 		context.clearRect(0, 0, canvas.width, canvas.height)
 	);
-	// context.clearRect(0, 0, canvas.width, canvas.height);
 	requestAnimationFrame(render);
 }
 
