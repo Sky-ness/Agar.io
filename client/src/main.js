@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-
+import { Maps } from '../../server/class/Maps.js';
 //              initialisation du contexte et canvas
 const canvas = document.querySelector('.gameCanvas'),
 	context = canvas.getContext('2d');
