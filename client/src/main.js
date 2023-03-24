@@ -1,7 +1,8 @@
 import { io } from 'socket.io-client';
-import CharacterView from './view/characterView.js';
+import { Maps } from '../../server/class/Maps.js';
+import CharacterView from './view/CharacterView.js';
 import ScoreBoardView from './view/ScoreBoardView.js';
-import ReplayView from './view/replayView.js';
+import ReplayView from './view/ReplayView.js';
 import PlayView from './view/PlayView.js';
 //              initialisation du contexte et canvas
 const canvas = document.querySelector('.gameCanvas'),
@@ -49,31 +50,34 @@ button.addEventListener('click', event => {
 });
 
 // 						scoreBoard
-const scoreBoard = document.querySelector('.scoreBoard');
-socket.on('players', players => {
-	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
-	players.forEach(player => {
-		scoreBoard.innerHTML += `<tr><td>${player.pseudo}</td><td>${player.score}</td></tr>`;
-	});
-});
+
 //-------------------------------------------------------------------------------
+let mapC = new Maps();
+
+const scoreBoard = document.querySelector('.scoreBoard');
+
+socket.on('map', mapS => {
+	mapC = mapS;
+});
+
+socket.on('deconnexion', () =>
+	context.clearRect(0, 0, canvas.width, canvas.height)
+);
 
 requestAnimationFrame(render);
 function render() {
-	//context.clearRect(0, 0, canvas.width, canvas.height);
-	socket.on('foods', foods =>
-		foods.forEach(element => {
-			drawCircle(element, 'green', pseudo);
-		})
-	);
-	socket.on('players', players =>
-		players.forEach(element => {
-			drawCircle(element, selectedColor, pseudo);
-		})
-	);
-	socket.on('deconnexion', () =>
-		context.clearRect(0, 0, canvas.width, canvas.height)
-	);
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
+	console.log(mapC);
+	mapC.players.forEach(player => {
+		scoreBoard.innerHTML += `<tr><td>${player.pseudo}</td><td>${player.score}</td></tr>`;
+	});
+	mapC.foods.forEach(element => {
+		drawCircle(element, 'green');
+	});
+	mapC.players.forEach(element => {
+		drawCircle(element, selectedColor);
+	});
 	requestAnimationFrame(render);
 }
 
@@ -85,6 +89,6 @@ function drawCircle(circle, color /*pseudo*/) {
 	// context.font = '10px Arial';
 	// context.fillStyle = 'black';
 	// context.fillText(pseudo, 100, 110);
-	context.stroke();
 	context.fill();
+	context.stroke();
 }
