@@ -181,11 +181,6 @@ function animate() {
 		element.x = xPos - sqSize / 2;
 		element.y = yPos - sqSize / 2;
 		drawCircle(element, selectedColor);
-		food.forEach(el => {
-			if (eatFood(el, element)) {
-				food = food.filter(food => food != el);
-			}
-		});
 	});
 	socket.emit('joueurs', joueurs);
 
