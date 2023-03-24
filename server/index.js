@@ -4,16 +4,16 @@ import express from 'express';
 import { Server as IOServer } from 'socket.io';
 import addWebpackMiddleware from './utils/addWebpackMiddleware.js';
 import { Circle } from './class/Circle.js';
-import { randomFood } from './function/random.js';
 import { generateRandomNumber } from './function/random.js';
+import { Maps } from './class/Maps.js';
 
 const app = express();
 const httpServer = http.createServer(app);
 const io = new IOServer(httpServer);
 addWebpackMiddleware(app);
 
-let foods = randomFood();
-let players = [];
+let mapS = new Maps(1000, 1000);
+mapS.randomFood(70, 80);
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -21,29 +21,27 @@ io.on('connection', socket => {
 		// temporaire le temps que les mouvements ne fonctionne pas (ça déconnecte le joueur quand on ferme la page)
 		console.log(`Déconnexion du client ${socket.id}`);
 		// On supprime le joueur de la liste principale quand il se déconnecte
-		players = players.filter(player => player.pseudo !== '' + socket.id);
+		mapS.removePlayer(socket.id);
 		// On envoie les informations a tout les autres joueurs foods players restants et on nettoie le canva
-		console.log(players);
+		console.log(mapS.players);
 		io.emit('deconnexion');
-		io.emit('foods', foods);
-		io.emit('players', players);
+		io.emit('map', mapS);
 	});
 	// A la connection du joueur on créer un nouveau joueur sur le plateau
 	socket.on('play', () => {
-		players.push(
+		mapS.addPlayer(
 			new Circle(
 				socket.id,
-				generateRandomNumber(0, 1000),
-				generateRandomNumber(0, 500),
+				generateRandomNumber(0, mapS.width),
+				generateRandomNumber(0, mapS.height),
 				20
 			)
 		);
-		console.log(players);
-		io.emit('players', players);
+		console.log(mapS.players);
+		setInterval(() => {
+			io.emit('map', mapS);
+		}, 25);
 	});
-	// setInterval(() => {
-	io.emit('foods', foods);
-	// }, 25);
 });
 
 //			Système de déplacement (a implémeneter)

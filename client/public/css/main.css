@@ -1,5 +1,10 @@
-/* canvas {
-    background-color: white;
-    border: 3px dashed #777;
-    width:100%;
-} */
+  .score {
+    position: absolute;
+    top: 30px ;
+    right: 30px;
+  }
+  .character{
+    position: absolute;
+    top: 500px ;
+    right: 500px;
+  }
