@@ -64,7 +64,7 @@ let mouse = { x: 0, y: 0 };
 let canvasPos = getPosition(canvas);
 
 function setMousePosition(e) {
-	mouse = { x: e.clientX - canvasPos.x, y: e.clientY - canvasPos.y };
+	mouse = { x: e.clientX - canvasPos.x, y: e.clientY - canvasPos.y, id: socket.id };
 }
 
 canvas.addEventListener('mousemove', event => setMousePosition(event));
