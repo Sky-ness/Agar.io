@@ -93,10 +93,8 @@ function drawCircle(circle, color /*pseudo*/) {
 	context.beginPath();
 	context.fillStyle = '' + color;
 	context.lineWidth = 3;
-	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
-	// context.font = '10px Arial';
-	// context.fillStyle = 'black';
 	// context.fillText(pseudo, circle.x, circle.y);
+	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
 	context.fill();
 	context.stroke();
 }

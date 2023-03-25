@@ -34,6 +34,7 @@ io.on('connection', socket => {
 		// On supprime le joueur de la liste principale quand il se déconnecte
 		mapS.removePlayer(socket.id);
 	});
+
 	// A la connection du joueur on créer un nouveau joueur sur le plateau
 	socket.on('play', () => {
 		mapS.addPlayer(
