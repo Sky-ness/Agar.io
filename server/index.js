@@ -13,29 +13,42 @@ const httpServer = http.createServer(app);
 const io = new IOServer(httpServer);
 addWebpackMiddleware(app);
 
+// 					page principal du jeu
+app.get('/', app.use(express.static('client/public')));
+
+//			Définition du port utilisé pour notre serveur
+if (env.PORT == undefined) {
+	env.PORT = 8000;
+}
+httpServer.listen(env.PORT, () => {
+	console.log(`Server running at http://localhost:${env.PORT}/`);
+});
+
 let mapS = new Maps(1000, 1000);
-mapS.randomFood(70, 80);
 
 io.on('connection', socket => {
+	// par default le pseudo du joueur est la socket id si il ne compléte pas le champ
 	let name = '' + socket.id;
+	//par default la couleur est noir si elle n'est pas compléter
 	let color;
+	//On reçoit le pseudo du joueur
 	socket.on('pseudo', pseudo => {
 		if (pseudo != '') {
 			name = pseudo;
 		}
 	});
+	// on reçoit la couleur selectionner par le joueur
 	socket.on('color', color1 => {
 		color = color1;
 	});
-
 	console.log(`Nouvelle connexion du client ${name}`);
 	socket.on('disconnect', () => {
-		console.log(`Déconnexion du client ${socket.id}`);
-		// On supprime le joueur de la liste principale quand il se déconnecte
-		mapS.removePlayer(socket.id);
+		console.log(`Déconnexion du client ${name}`);
+		// on enleve le joueur quand il se déconnecte
+		mapS.removePlayer(name);
 	});
 
-	// A la connection du joueur on créer un nouveau joueur sur le plateau
+	// Quand le joueur appuie sur play on créer un nouveau joueur sur le plateau
 	socket.on('play', () => {
 		mapS.addPlayer(
 			new Player(
@@ -47,25 +60,18 @@ io.on('connection', socket => {
 			)
 		);
 		socket.on('mousePosition', mouse => {
+			//On récupére la position ou le jouer doit bouger
 			let moveD = move(mouse.x, mouse.y);
+			//On set la position du joueur en conséquence
 			mapS.getPlayer(name).setPosition(moveD.x, moveD.y);
 		});
-		setInterval(() => {
-			mapS.sortPlayer();
-			io.emit('map', mapS);
-		}, 25);
 	});
-});
-
-//			Système de déplacement (a implémeneter)
-
-// 					page principal du jeu
-app.get('/', app.use(express.static('client/public')));
-
-//			Définition du port utilisé pour notre serveur
-if (env.PORT == undefined) {
-	env.PORT = 8000;
-}
-httpServer.listen(env.PORT, () => {
-	console.log(`Server running at http://localhost:${env.PORT}/`);
+	setInterval(() => {
+		//les joueurs sont trier du min au max
+		mapS.sortPlayer();
+		// la nourriture est regénérer si elle est inférieur a 100
+		mapS.randomFood(200);
+		//On émet la position des joueurs
+		io.emit('map', mapS);
+	}, 25);
 });

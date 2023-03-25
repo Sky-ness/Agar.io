@@ -10,16 +10,18 @@ export class Maps {
 		this.width = width;
 		this.height = height;
 	}
-	randomFood(foodsMin, foodsMax) {
-		for (let i = 0; i <= generateRandomNumber(foodsMin, foodsMax); i++) {
-			this.foods.push(
-				new Food(
-					'green',
-					generateRandomNumber(0, this.width),
-					generateRandomNumber(0, this.height),
-					10
-				)
-			);
+	randomFood(foodsMax) {
+		while (this.foods.length < foodsMax) {
+			for (let i = 0; i <= generateRandomNumber(0, 20); i++) {
+				this.foods.push(
+					new Food(
+						'green',
+						generateRandomNumber(0, this.width),
+						generateRandomNumber(0, this.height),
+						10
+					)
+				);
+			}
 		}
 	}
 	addPlayer(player) {

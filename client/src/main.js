@@ -46,12 +46,14 @@ button.addEventListener('click', event => {
 	document.querySelector('.characterForm').style.display = 'none';
 });
 
-// 						scoreBoard
-
 //-------------------------------------------------------------------------------
 let mapC = new Maps();
+let mouse = { x: 0, y: 0 };
+let canvasPos = getPosition(canvas);
 
 const scoreBoard = document.querySelector('.scoreBoard');
+
+canvas.addEventListener('mousemove', event => setMousePosition(event));
 
 socket.on('map', mapS => {
 	mapC = mapS;
@@ -61,21 +63,11 @@ socket.on('deconnexion', () =>
 	context.clearRect(0, 0, canvas.width, canvas.height)
 );
 
-let mouse = { x: 0, y: 0 };
-let canvasPos = getPosition(canvas);
-
-function setMousePosition(e) {
-	mouse = { x: e.clientX - canvasPos.x, y: e.clientY - canvasPos.y };
-}
-
-canvas.addEventListener('mousemove', event => setMousePosition(event));
-
 requestAnimationFrame(render);
 
 function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
-	// console.log(mapC);
 	socket.emit('mousePosition', mouse);
 	for (let i = mapC.players.length - 1; i >= 0; i--) {
 		scoreBoard.innerHTML += `<tr><td>${mapC.players[i].pseudo}</td><td>${mapC.players[i].score}</td></tr>`;
@@ -97,6 +89,10 @@ function drawCircle(circle, color /*pseudo*/) {
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
 	context.fill();
 	context.stroke();
+}
+
+function setMousePosition(e) {
+	mouse = { x: e.clientX - canvasPos.x, y: e.clientY - canvasPos.y };
 }
 
 function getPosition(canva) {
