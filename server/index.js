@@ -48,7 +48,7 @@ io.on('connection', socket => {
 		);
 		socket.on('mousePosition', mouse => {
 			let moveD = move(mouse.x, mouse.y);
-			mapS.getPlayer(socket.id).setPosition(moveD.x, moveD.y);
+			mapS.getPlayer(name).setPosition(moveD.x, moveD.y);
 		});
 		setInterval(() => {
 			mapS.sortPlayer();

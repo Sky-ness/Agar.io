@@ -5,4 +5,8 @@ export class Player extends Food {
 		super(color, x, y, score);
 		this.pseudo = pseudo;
 	}
+	setPosition(x, y) {
+		this.x = x;
+		this.y = y;
+	}
 }
