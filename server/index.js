@@ -1,11 +1,12 @@
 import http from 'http';
-import { env } from 'node:process';
 import express from 'express';
+import { env } from 'node:process';
 import { Server as IOServer } from 'socket.io';
 import addWebpackMiddleware from './utils/addWebpackMiddleware.js';
-import { generateRandomNumber } from './function/random.js';
 import { Maps } from './class/Maps.js';
 import { Player } from './class/Player.js';
+import { generateRandomNumber } from './function/random.js';
+import { move } from './function/move.js';
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -29,10 +30,9 @@ io.on('connection', socket => {
 
 	console.log(`Nouvelle connexion du client ${name}`);
 	socket.on('disconnect', () => {
-		console.log(`Déconnexion du client ${name}`);
-		mapS.removePlayer(name);
-		console.log(mapS.players);
-		io.emit('map', mapS);
+		console.log(`Déconnexion du client ${socket.id}`);
+		// On supprime le joueur de la liste principale quand il se déconnecte
+		mapS.removePlayer(socket.id);
 	});
 	// A la connection du joueur on créer un nouveau joueur sur le plateau
 	socket.on('play', () => {
@@ -42,11 +42,15 @@ io.on('connection', socket => {
 				color,
 				generateRandomNumber(0, mapS.width),
 				generateRandomNumber(0, mapS.height),
-				20
+				generateRandomNumber(20, 50)
 			)
 		);
-		console.log(mapS.players);
+		socket.on('mousePosition', mouse => {
+			let moveD = move(mouse.x, mouse.y);
+			mapS.getPlayer(socket.id).setPosition(moveD.x, moveD.y);
+		});
 		setInterval(() => {
+			mapS.sortPlayer();
 			io.emit('map', mapS);
 		}, 25);
 	});
