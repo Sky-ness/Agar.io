@@ -33,16 +33,17 @@ const button = document.querySelector('.characterForm button');
 const pseudo = document.querySelector('.characterForm .pseudo');
 const colorPicker = document.querySelector('.characterForm .color');
 
-let selectedColor = 'red';
+let selectedColor = 'black';
 colorPicker.addEventListener('change', function () {
 	selectedColor = colorPicker.value;
 });
 
 button.addEventListener('click', event => {
 	event.preventDefault();
+	socket.emit('pseudo', pseudo.value);
+	socket.emit('color', selectedColor);
 	socket.emit('play');
 	document.querySelector('.characterForm').style.display = 'none';
-	// document.querySelector('.scoreBoard').style.display = 'block';
 });
 
 // 						scoreBoard
@@ -64,15 +65,14 @@ requestAnimationFrame(render);
 function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
-	console.log(mapC);
 	mapC.players.forEach(player => {
 		scoreBoard.innerHTML += `<tr><td>${player.pseudo}</td><td>${player.score}</td></tr>`;
 	});
 	mapC.foods.forEach(element => {
-		drawCircle(element, 'green');
+		drawCircle(element, element.color);
 	});
 	mapC.players.forEach(element => {
-		drawCircle(element, selectedColor);
+		drawCircle(element, element.color);
 	});
 	requestAnimationFrame(render);
 }
@@ -80,11 +80,11 @@ function render() {
 function drawCircle(circle, color /*pseudo*/) {
 	context.beginPath();
 	context.fillStyle = '' + color;
-	context.lineWidth = 5;
+	context.lineWidth = 3;
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
 	// context.font = '10px Arial';
 	// context.fillStyle = 'black';
-	// context.fillText(pseudo, 100, 110);
+	// context.fillText(pseudo, circle.x, circle.y);
 	context.fill();
 	context.stroke();
 }

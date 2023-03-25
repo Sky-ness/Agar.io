@@ -1,5 +1,5 @@
 import { generateRandomNumber } from '../function/random.js';
-import { Circle } from './Circle.js';
+import { Food } from './Food.js';
 
 export class Maps {
 	players = [];
@@ -13,8 +13,8 @@ export class Maps {
 	randomFood(foodsMin, foodsMax) {
 		for (let i = 0; i <= generateRandomNumber(foodsMin, foodsMax); i++) {
 			this.foods.push(
-				new Circle(
-					'foods',
+				new Food(
+					'green',
 					generateRandomNumber(0, this.width),
 					generateRandomNumber(0, this.height),
 					10
