@@ -35,7 +35,7 @@ const button = document.querySelector('.characterForm button');
 const pseudo = document.querySelector('.characterForm .pseudo');
 const colorPicker = document.querySelector('.characterForm .color');
 
-let selectedColor = 'black';
+let selectedColor = colorPicker.value;
 colorPicker.addEventListener('change', function () {
 	selectedColor = colorPicker.value;
 });
@@ -45,13 +45,12 @@ button.addEventListener('click', event => {
 	socket.emit('pseudo', pseudo.value);
 	socket.emit('color', selectedColor);
 	socket.emit('play');
-	document.querySelector('.characterForm').style.display = 'none';
+	document.querySelector('.character').style.display = 'none';
 });
 
 //-------------------------------------------------------------------------------
 let mapC = new Maps();
 let mouse = { x: 0, y: 0 };
-let canvasPos = getPosition(canvas);
 
 const scoreBoard = document.querySelector('.scoreBoard');
 
@@ -65,17 +64,17 @@ socket.on('deconnexion', () =>
 	context.clearRect(0, 0, canvas.width, canvas.height)
 );
 
+
 requestAnimationFrame(render);
 
 function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	grid(70);
-	socket.emit('mousePosition', mouse);
 	scoreBoard.innerHTML = '';
 	for (let i = mapC.players.length - 1; i >= 0; i--) {
 		scoreBoard.innerHTML += `<li>${mapC.players[i].pseudo} : ${mapC.players[i].score}</li>`;
 	}
-
+	socket.emit('mousePosition', mouse);
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color);
 	});
@@ -94,12 +93,11 @@ function drawCircle(circle, color /*pseudo*/) {
 	context.fill();}
 
 function setMousePosition(e) {
-	mouse = { x: e.clientX - canvasPos.x, y: e.clientY - canvasPos.y };
+	mouse = { x: e.clientX , y: e.clientY };
 }
 
 function grid(size){
 	context.lineWidth = 2;
-
     for (var x = 0; x <= canvas.width; x += size) {
       context.moveTo(x, 0);
       context.lineTo(x, canvas.height);
@@ -108,34 +106,8 @@ function grid(size){
       context.moveTo(0, y);
       context.lineTo(canvas.width, y);
     }
-
-    context.strokeStyle = "#ccc";
+    context.strokeStyle = 'rgba(204, 204, 204, 0.3)';
     context.stroke();
-}
-
-function getPosition(canva) {
-	let xPos = 0;
-	let yPos = 0;
-
-	while (canva) {
-		if (canva.tagName == 'BODY') {
-			// deal with browser quirks with body/window/document and page scroll
-			let xScroll = canva.scrollLeft || document.documentElement.scrollLeft;
-			let yScroll = canva.scrollTop || document.documentElement.scrollTop;
-
-			xPos += canva.offsetLeft - xScroll + canva.clientLeft;
-			yPos += canva.offsetTop - yScroll + canva.clientTop;
-		} else {
-			// for all other non-BODY elements
-			xPos += canva.offsetLeft - canva.scrollLeft + canva.clientLeft;
-			yPos += canva.offsetTop - canva.scrollTop + canva.clientTop;
-		}
-		canva = canva.offsetParent;
-	}
-	return {
-		x: xPos,
-		y: yPos,
-	};
 }
 
 //-----------------------------------------------------
