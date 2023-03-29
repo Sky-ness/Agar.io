@@ -69,12 +69,13 @@ requestAnimationFrame(render);
 
 function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	grid(50);
-	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
+	grid(70);
 	socket.emit('mousePosition', mouse);
+	scoreBoard.innerHTML = '';
 	for (let i = mapC.players.length - 1; i >= 0; i--) {
-		scoreBoard.innerHTML += `<tr><td>${mapC.players[i].pseudo}</td><td>${mapC.players[i].score}</td></tr>`;
+		scoreBoard.innerHTML += `<li>${mapC.players[i].pseudo} : ${mapC.players[i].score}</li>`;
 	}
+
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color);
 	});
@@ -90,10 +91,7 @@ function drawCircle(circle, color /*pseudo*/) {
 	context.lineWidth = 4;
 	// context.fillText(pseudo, circle.x, circle.y);
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
-	context.fill();
-	context.strokeStyle = 'black';
-	context.stroke();
-}
+	context.fill();}
 
 function setMousePosition(e) {
 	mouse = { x: e.clientX - canvasPos.x, y: e.clientY - canvasPos.y };
