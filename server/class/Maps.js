@@ -1,5 +1,6 @@
 import { generateRandomNumber } from '../function/random.js';
 import { Food } from './Food.js';
+import { randomColor } from '../function/random.js';
 
 export class Maps {
 	players = [];
@@ -15,7 +16,7 @@ export class Maps {
 			for (let i = 0; i <= generateRandomNumber(0, 20); i++) {
 				this.foods.push(
 					new Food(
-						'green',
+						randomColor(),
 						generateRandomNumber(0, this.width),
 						generateRandomNumber(0, this.height),
 						10

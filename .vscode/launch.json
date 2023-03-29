@@ -30,7 +30,7 @@
 			"type": "firefox",
 			"request": "launch",
 			"reAttach": true,
-			"port": 8008,
+			"port": 8000,
 			"timeout": 25,
 			"url": "http://localhost:8000",
 			"webRoot": "${workspaceFolder}",

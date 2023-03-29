@@ -24,7 +24,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(1000, 1000);
+let mapS = new Maps(2500, 1200);
 
 io.on('connection', socket => {
 	// par default le pseudo du joueur est la socket id si il ne compléte pas le champ

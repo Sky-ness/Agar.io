@@ -9,6 +9,8 @@ const canvas = document.querySelector('.gameCanvas'),
 const socket = io();
 
 //                   resize du canvas
+
+  /* context.translate context.save context.qqch */
 const canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
 canvasResizeObserver.observe(canvas);
 
@@ -67,6 +69,7 @@ requestAnimationFrame(render);
 
 function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
+	grid(50);
 	scoreBoard.innerHTML = '<tr><th>pseudo</th><th>score</th></tr>';
 	socket.emit('mousePosition', mouse);
 	for (let i = mapC.players.length - 1; i >= 0; i--) {
@@ -84,15 +87,32 @@ function render() {
 function drawCircle(circle, color /*pseudo*/) {
 	context.beginPath();
 	context.fillStyle = '' + color;
-	context.lineWidth = 3;
+	context.lineWidth = 4;
 	// context.fillText(pseudo, circle.x, circle.y);
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
 	context.fill();
+	context.strokeStyle = 'black';
 	context.stroke();
 }
 
 function setMousePosition(e) {
 	mouse = { x: e.clientX - canvasPos.x, y: e.clientY - canvasPos.y };
+}
+
+function grid(size){
+	context.lineWidth = 2;
+
+    for (var x = 0; x <= canvas.width; x += size) {
+      context.moveTo(x, 0);
+      context.lineTo(x, canvas.height);
+    }
+    for (var y = 0; y <= canvas.height; y += size) {
+      context.moveTo(0, y);
+      context.lineTo(canvas.width, y);
+    }
+
+    context.strokeStyle = "#ccc";
+    context.stroke();
 }
 
 function getPosition(canva) {
