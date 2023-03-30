@@ -7,37 +7,16 @@ let speedX = 50;
 let speedY = 50;
 
 export function move(mouseX, mouseY) {
-	if (mouseX - xPos > 300) {
-		speedX = 300;
-	} else if (mouseX - xPos < -300) {
-		speedX = 300;
-	} else if (mouseX - xPos > 100) {
-		speedX = 200;
-	} else if (mouseX - xPos < -100) {
-		speedX = 200;
-	} else {
-		speedX = 100;
-	}
-	if (mouseY - yPos > 300) {
-		speedY = 300;
-	} else if (mouseY - yPos < -300) {
-		speedY = 300;
-	} else if (mouseY - yPos > 100) {
-		speedY = 200;
-	} else if (mouseY - yPos < -100) {
-		speedY = 200;
-	} else {
-		speedY = 100;
-	}
+	let truc = Math.sqrt(Math.pow(xPos - mouseX, 2) + Math.pow(yPos - mouseY, 2));
 
 	dX = mouseX - xPos;
 	dY = mouseY - yPos;
 
-	xPos += dX / speedX;
-	yPos += dY / speedY;
+	xPos += (dX / truc) * 2;
+	yPos += (dY / truc) * 2;
 
 	return {
-		x: xPos - sqSize / 2,
-		y: yPos - sqSize / 2,
+		x: xPos,
+		y: yPos,
 	};
 }
