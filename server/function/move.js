@@ -3,17 +3,24 @@ let xPos = 0;
 let yPos = 0;
 let dX = 0;
 let dY = 0;
-let speedX = 50;
-let speedY = 50;
+let truc;
+let speed = 2;
 
 export function move(mouseX, mouseY) {
-	let truc = Math.sqrt(Math.pow(xPos - mouseX, 2) + Math.pow(yPos - mouseY, 2));
+	truc = Math.sqrt(Math.pow(xPos - mouseX, 2) + Math.pow(yPos - mouseY, 2));
 
+	if (truc < 150) {
+		speed = 1;
+	} else {
+		speed = 2;
+	}
+
+	console.log(truc);
 	dX = mouseX - xPos;
 	dY = mouseY - yPos;
 
-	xPos += (dX / truc) * 2;
-	yPos += (dY / truc) * 2;
+	xPos += (dX / truc) * speed;
+	yPos += (dY / truc) * speed;
 
 	return {
 		x: xPos,
