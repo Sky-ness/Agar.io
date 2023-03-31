@@ -15,7 +15,6 @@ export function move(mouseX, mouseY) {
 		speed = 2;
 	}
 
-	console.log(truc);
 	dX = mouseX - xPos;
 	dY = mouseY - yPos;
 

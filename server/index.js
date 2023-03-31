@@ -8,7 +8,6 @@ import { Maps } from './class/Maps.js';
 import { generateRandomNumber } from './function/random.js';
 import { move } from './function/move.js';
 
-
 const app = express();
 const httpServer = http.createServer(app);
 const io = new IOServer(httpServer);
@@ -36,37 +35,34 @@ io.on('connection', socket => {
 		);
 		socket.on('mousePosition', mouse => {
 			let moveD = move(mouse.x, mouse.y);
-			if(mapS.players.find(e => e.pseudo == mouse.id)){
+			if (mapS.players.find(e => e.pseudo == mouse.id)) {
 				mapS.getPlayer(mouse.id).setPosition(moveD.x, moveD.y);
 			}
-			
 		});
 		setInterval(() => {
 			mapS.sortPlayer();
 
 			mapS.players.forEach(element => {
 				mapS.players.forEach(el => {
-					if(element != el){
-						if(mapS.feed(element,el)){
+					if (element != el) {
+						if (mapS.feed(element, el)) {
 							element.score += 2;
-							mapS.players = mapS.players.filter(player => 
-								!mapS.feed(element,player)
-							)
+							mapS.players = mapS.players.filter(
+								player => !mapS.feed(element, player)
+							);
 						}
 					}
-				})
-			})
-			
+				});
+			});
+
 			mapS.players.forEach(element => {
 				mapS.foods.forEach(el => {
-					if(mapS.feed(element,el)){
+					if (mapS.feed(element, el)) {
 						element.score += 2;
-						mapS.foods = mapS.foods.filter(food => 
-							!mapS.feed(element,food)
-						)
+						mapS.foods = mapS.foods.filter(food => !mapS.feed(element, food));
 					}
-				})
-			})
+				});
+			});
 			io.emit('map', mapS);
 		}, 25);
 	});

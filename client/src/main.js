@@ -49,6 +49,7 @@ button.addEventListener('click', event => {
 
 //-------------------------------------------------------------------------------
 let mapC = new Maps();
+let canvasPos = getPosition(canvas);
 
 const scoreBoard = document.querySelector('.scoreBoard');
 
@@ -63,7 +64,11 @@ socket.on('deconnexion', () =>
 let mouse = { x: 0, y: 0 };
 
 function setMousePosition(e) {
-	mouse = { x: e.clientX, y: e.clientY, id: socket.id };
+	mouse = {
+		x: e.clientX - canvasPos.x,
+		y: e.clientY - canvasPos.y,
+		id: socket.id,
+	};
 }
 
 canvas.addEventListener('mousemove', event => setMousePosition(event));
@@ -100,3 +105,28 @@ function drawCircle(circle, color /*pseudo*/) {
 }
 
 //-----------------------------------------------------
+
+function getPosition(canva) {
+	let xPos = 0;
+	let yPos = 0;
+
+	while (canva) {
+		if (canva.tagName == 'BODY') {
+			// deal with browser quirks with body/window/document and page scroll
+			let xScroll = canva.scrollLeft || document.documentElement.scrollLeft;
+			let yScroll = canva.scrollTop || document.documentElement.scrollTop;
+
+			xPos += canva.offsetLeft - xScroll + canva.clientLeft;
+			yPos += canva.offsetTop - yScroll + canva.clientTop;
+		} else {
+			// for all other non-BODY elements
+			xPos += canva.offsetLeft - canva.scrollLeft + canva.clientLeft;
+			yPos += canva.offsetTop - canva.scrollTop + canva.clientTop;
+		}
+		canva = canva.offsetParent;
+	}
+	return {
+		x: xPos,
+		y: yPos,
+	};
+}
