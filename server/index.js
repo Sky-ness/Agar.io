@@ -77,7 +77,7 @@ io.on('connection', socket => {
 			mapS.players.forEach(el => {
 				if (element != el) {
 					if (mapS.feed(element, el)) {
-						element.score += 2;
+						element.score += el.score / 2;
 						mapS.players = mapS.players.filter(
 							player => !mapS.feed(element, player)
 						);

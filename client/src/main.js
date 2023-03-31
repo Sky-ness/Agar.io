@@ -65,14 +65,15 @@ socket.on('deconnexion', () =>
 );
 canvas.addEventListener('mousemove', event => setMousePosition(event));
 
+let test;
 function setMousePosition(event) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = { x: event.clientX - rect.left, y: event.clientY - rect.top };
 }
 
 requestAnimationFrame(render);
-
 function render() {
+	context.save();
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	grid(70);
 	scoreBoard.innerHTML = '';
@@ -86,6 +87,12 @@ function render() {
 	mapC.players.forEach(element => {
 		drawCircle(element, element.color);
 	});
+	if ((test = mapC.players.find(el => el.id == socket.id) != null)) {
+		test = mapC.players.find(el => el.id == socket.id);
+		context.translate(canvas.width / 2 / test.x, canvas.height / 2 / test.y);
+	}
+	context.restore();
+
 	requestAnimationFrame(render);
 }
 
