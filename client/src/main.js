@@ -53,7 +53,7 @@ let mapC = new Maps();
 
 const scoreBoard = document.querySelector('.scoreBoard');
 
-canvas.addEventListener('mousemove', event => setMousePosition(event));
+let mouse = {x:0 ,y:0};
 
 socket.on('map', mapS => {
 	mapC = mapS;
@@ -62,18 +62,12 @@ socket.on('map', mapS => {
 socket.on('deconnexion', () =>
 	context.clearRect(0, 0, canvas.width, canvas.height)
 );
-
-let mouse = { x: 0, y: 0, id: socket.id };
-
-function setMousePosition(e) {
-	mouse = {
-		x: e.clientX,
-		y: e.clientY,
-		id: socket.id,
-	};
-}
-
 canvas.addEventListener('mousemove', event => setMousePosition(event));
+
+function setMousePosition(event) {
+	const rect = canvas.getBoundingClientRect();
+	mouse =  { x: event.clientX - rect.left, y:event.clientY - rect.top };
+}
 
 requestAnimationFrame(render);
 
@@ -81,10 +75,10 @@ function render() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	grid(70);
 	scoreBoard.innerHTML = '';
+	socket.emit("mousePosition",mouse)
 	for (let i = mapC.players.length - 1; i >= 0; i--) {
 		scoreBoard.innerHTML += `<li>${mapC.players[i].pseudo} : ${mapC.players[i].score}</li>`;
 	}
-	socket.emit('mousePosition', mouse);
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color);
 	});

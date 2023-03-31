@@ -6,8 +6,4 @@ export class Player extends Food {
 		this.pseudo = pseudo;
 		this.id = id;
 	}
-	setPosition(x, y) {
-		this.x = x;
-		this.y = y;
-	}
 }
