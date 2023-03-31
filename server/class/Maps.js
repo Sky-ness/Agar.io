@@ -29,7 +29,8 @@ export class Maps {
 		this.players.push(player);
 	}
 	getPlayer(id) {
-		return this.players.filter(player => player.id === '' + id)[0];
+		let test = this.players.filter(player => player.id == id);
+		return test[0];
 	}
 
 	getPlayers() {

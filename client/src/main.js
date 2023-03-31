@@ -1,4 +1,5 @@
 import { io } from 'socket.io-client';
+//import { resolveModuleName } from 'typescript';
 import { Maps } from '../../server/class/Maps.js';
 //              initialisation du contexte et canvas
 const canvas = document.querySelector('.gameCanvas'),
@@ -52,8 +53,6 @@ button.addEventListener('click', event => {
 let mapC = new Maps();
 
 const scoreBoard = document.querySelector('.scoreBoard');
-
-canvas.addEventListener('mousemove', event => setMousePosition(event));
 
 socket.on('map', mapS => {
 	mapC = mapS;
