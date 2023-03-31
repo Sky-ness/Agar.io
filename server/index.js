@@ -61,16 +61,10 @@ io.on('connection', socket => {
 			)
 		);
 		socket.on('mousePosition', mouse => {
-			//On récupére la position ou le jouer doit bouger
-			let moveD = move(mouse.x, mouse.y);
-			if (
-				mapS.getPlayer(mouse.id) != null &&
-				mapS.getPlayer(mouse.id).id == mouse.id
-			) {
-				mapS.getPlayer(mouse.id).setPosition(moveD.x, moveD.y);
+			if (mapS.getPlayer(socket.id) != null) {
+				//On set la position du joueur en conséquence
+				move(mouse.x, mouse.y, mapS.getPlayer(socket.id));
 			}
-
-			//On set la position du joueur en conséquence
 		});
 	});
 	setInterval(() => {

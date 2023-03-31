@@ -1,13 +1,11 @@
-let sqSize = 0;
-let xPos = 0;
-let yPos = 0;
 let dX = 0;
 let dY = 0;
 let truc;
 let speed = 2;
 
-export function move(mouseX, mouseY) {
-	truc = Math.sqrt(Math.pow(xPos - mouseX, 2) + Math.pow(yPos - mouseY, 2));
+export function move(mouseX, mouseY,player) {
+
+	truc = Math.sqrt(Math.pow(player.x - mouseX, 2) + Math.pow(player.y - mouseY, 2));
 
 	if (truc < 150) {
 		speed = 1;
@@ -15,14 +13,9 @@ export function move(mouseX, mouseY) {
 		speed = 2;
 	}
 
-	dX = mouseX - xPos;
-	dY = mouseY - yPos;
+	dX = mouseX - player.x;
+	dY = mouseY - player.y;
 
-	xPos += (dX / truc) * speed;
-	yPos += (dY / truc) * speed;
-
-	return {
-		x: xPos,
-		y: yPos,
-	};
+	player.x += (dX / truc) * speed;
+	player.y += (dY / truc) * speed;
 }
