@@ -91,6 +91,7 @@ io.on('connection', socket => {
 				if (mapS.feed(element, el)) {
 					element.score += 2;
 					mapS.foods = mapS.foods.filter(food => !mapS.feed(element, food));
+					io.emit('eatFood');
 				}
 			});
 		});

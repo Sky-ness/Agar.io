@@ -8,7 +8,7 @@ const canvas = document.querySelector('.gameCanvas'),
 //TODO faire le canva a la taille de la fenetre
 //                   initialisation du serveur coté client
 const socket = io();
-
+let scale = 2;
 //                   resize du canvas
 
 /* context.translate context.save context.qqch */
@@ -47,8 +47,16 @@ button.addEventListener('click', event => {
 	socket.emit('color', selectedColor);
 	socket.emit('play');
 	document.querySelector('.character').style.display = 'none';
-	context.scale(2, 2);
+	context.scale(scale, scale);
+	context.save();
 });
+
+function taille() {
+	context.restore();
+	scale -= 0.01;
+	context.scale(scale, scale);
+	context.save();
+}
 
 //-------------------------------------------------------------------------------
 let mapC = new Maps();
@@ -61,6 +69,11 @@ socket.on('map', mapS => {
 	mapC = mapS;
 });
 
+socket.on('eatFood', () => {
+	taille();
+	console.log('scale');
+});
+
 socket.on('deconnexion', () =>
 	context.clearRect(0, 0, canvas.width, canvas.height)
 );
@@ -70,8 +83,8 @@ let test;
 function setMousePosition(event) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = {
-		x: (event.clientX - rect.left) / 2,
-		y: (event.clientY - rect.top) / 2,
+		x: (event.clientX - rect.left) / scale,
+		y: (event.clientY - rect.top) / scale,
 	};
 }
 
