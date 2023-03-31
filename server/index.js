@@ -28,7 +28,7 @@ let mapS = new Maps(2500, 1200);
 
 io.on('connection', socket => {
 	// par default le pseudo du joueur est la socket id si il ne compléte pas le champ
-	let name = '' + socket.id;
+	let name = ''
 	//par default la couleur est noir si elle n'est pas compléter
 	let color;
 	//On reçoit le pseudo du joueur
@@ -41,18 +41,18 @@ io.on('connection', socket => {
 	socket.on('color', color1 => {
 		color = color1;
 	});
-	console.log(`Nouvelle connexion du client ${name}`);
+	console.log(`Nouvelle connexion du client ${socket.id}`);
 	socket.on('disconnect', () => {
-		console.log(`Déconnexion du client ${name}`);
+		console.log(`Déconnexion du client ${socket.id}`);
 		// on enleve le joueur quand il se déconnecte
-		mapS.removePlayer(name);
+		mapS.removePlayer(socket.id);
 	});
 
 	// Quand le joueur appuie sur play on créer un nouveau joueur sur le plateau
 	socket.on('play', () => {
 		mapS.addPlayer(
 			new Player(
-				name,
+				socket.id,
 				color,
 				generateRandomNumber(0, mapS.width),
 				generateRandomNumber(0, mapS.height),
@@ -63,7 +63,7 @@ io.on('connection', socket => {
 			//On récupére la position ou le jouer doit bouger
 			let moveD = move(mouse.x, mouse.y);
 			//On set la position du joueur en conséquence
-			mapS.getPlayer(name).setPosition(moveD.x, moveD.y);
+			mapS.getPlayer(socket.id).setPosition(moveD.x, moveD.y);
 		});
 	});
 	setInterval(() => {
