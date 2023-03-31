@@ -98,11 +98,6 @@ function render() {
 	requestAnimationFrame(render);
 }
 
-function setMousePosition(event) {
-	const rect = canvas.getBoundingClientRect();
-	mouse = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-}
-
 function drawCircle(circle, color, pseudo) {
 	context.beginPath();
 	context.fillStyle = '' + color;
