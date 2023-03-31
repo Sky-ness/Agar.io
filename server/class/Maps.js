@@ -28,11 +28,11 @@ export class Maps {
 	addPlayer(player) {
 		this.players.push(player);
 	}
-	getPlayer(pseudo) {
-		return this.players.filter(player => player.pseudo === '' + pseudo)[0];
+	getPlayer(id) {
+		return this.players.filter(player => player.id === '' + id)[0];
 	}
-	removePlayer(pseudo) {
-		this.players = this.players.filter(player => player.pseudo !== '' + pseudo);
+	removePlayer(id) {
+		this.players = this.players.filter(player => player.id !== '' + id);
 	}
 	sortPlayer() {
 		this.players.sort((a, b) => a.score - b.score);
