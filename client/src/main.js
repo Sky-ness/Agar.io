@@ -103,10 +103,6 @@ function drawCircle(circle, color /*pseudo*/) {
 	context.fill();
 }
 
-function setMousePosition(e) {
-	mouse = { x: e.clientX, y: e.clientY };
-}
-
 function grid(size) {
 	context.lineWidth = 2;
 	for (var x = 0; x <= canvas.width; x += size) {

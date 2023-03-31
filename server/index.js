@@ -52,19 +52,20 @@ io.on('connection', socket => {
 	socket.on('play', () => {
 		mapS.addPlayer(
 			new Player(
+				name,
 				socket.id,
 				color,
 				generateRandomNumber(0, mapS.width),
 				generateRandomNumber(0, mapS.height),
-				generateRandomNumber(20, 50)
+				generateRandomNumber(20, 20)
 			)
 		);
 		socket.on('mousePosition', mouse => {
 			//On récupére la position ou le jouer doit bouger
 			let moveD = move(mouse.x, mouse.y);
 
-			if (mapS.players.find(e => e.pseudo == mouse.id)) {
-				mapS.getPlayer(socket.id).setPosition(moveD.x, moveD.y);
+			if (mapS.players.find(e => e.id == mouse.id)) {
+				mapS.getPlayer(mouse.id).setPosition(moveD.x, moveD.y);
 			}
 
 			//On set la position du joueur en conséquence
