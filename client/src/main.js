@@ -10,7 +10,7 @@ const socket = io();
 
 //                   resize du canvas
 
-  /* context.translate context.save context.qqch */
+/* context.translate context.save context.qqch */
 const canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
 canvasResizeObserver.observe(canvas);
 
@@ -50,7 +50,6 @@ button.addEventListener('click', event => {
 
 //-------------------------------------------------------------------------------
 let mapC = new Maps();
-let mouse = { x: 0, y: 0 };
 
 const scoreBoard = document.querySelector('.scoreBoard');
 
@@ -64,6 +63,17 @@ socket.on('deconnexion', () =>
 	context.clearRect(0, 0, canvas.width, canvas.height)
 );
 
+let mouse = { x: 0, y: 0, id: socket.id };
+
+function setMousePosition(e) {
+	mouse = {
+		x: e.clientX,
+		y: e.clientY,
+		id: socket.id,
+	};
+}
+
+canvas.addEventListener('mousemove', event => setMousePosition(event));
 
 requestAnimationFrame(render);
 
@@ -90,24 +100,24 @@ function drawCircle(circle, color /*pseudo*/) {
 	context.lineWidth = 4;
 	// context.fillText(pseudo, circle.x, circle.y);
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
-	context.fill();}
+	context.fill();
+}
 
 function setMousePosition(e) {
-	mouse = { x: e.clientX , y: e.clientY };
+	mouse = { x: e.clientX, y: e.clientY };
 }
 
-function grid(size){
+function grid(size) {
 	context.lineWidth = 2;
-    for (var x = 0; x <= canvas.width; x += size) {
-      context.moveTo(x, 0);
-      context.lineTo(x, canvas.height);
-    }
-    for (var y = 0; y <= canvas.height; y += size) {
-      context.moveTo(0, y);
-      context.lineTo(canvas.width, y);
-    }
-    context.strokeStyle = 'rgba(204, 204, 204, 0.3)';
-    context.stroke();
+	for (var x = 0; x <= canvas.width; x += size) {
+		context.moveTo(x, 0);
+		context.lineTo(x, canvas.height);
+	}
+	for (var y = 0; y <= canvas.height; y += size) {
+		context.moveTo(0, y);
+		context.lineTo(canvas.width, y);
+	}
+	context.strokeStyle = 'rgba(204, 204, 204, 0.3)';
+	context.stroke();
 }
-
 //-----------------------------------------------------

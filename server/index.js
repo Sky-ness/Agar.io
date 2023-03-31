@@ -62,8 +62,10 @@ io.on('connection', socket => {
 		socket.on('mousePosition', mouse => {
 			//On récupére la position ou le jouer doit bouger
 			let moveD = move(mouse.x, mouse.y);
-			//On set la position du joueur en conséquence
-			mapS.getPlayer(name).setPosition(moveD.x, moveD.y);
+
+			if (mapS.players.find(e => e.pseudo == mouse.id)) {
+				mapS.getPlayer(mouse.id).setPosition(moveD.x, moveD.y);
+			}
 		});
 	});
 	setInterval(() => {
@@ -71,6 +73,28 @@ io.on('connection', socket => {
 		mapS.sortPlayer();
 		// la nourriture est regénérer si elle est inférieur a 100
 		mapS.randomFood(200);
+
+		mapS.players.forEach(element => {
+			mapS.players.forEach(el => {
+				if (element != el) {
+					if (mapS.feed(element, el)) {
+						element.score += 2;
+						mapS.players = mapS.players.filter(
+							player => !mapS.feed(element, player)
+						);
+					}
+				}
+			});
+		});
+
+		mapS.players.forEach(element => {
+			mapS.foods.forEach(el => {
+				if (mapS.feed(element, el)) {
+					element.score += 2;
+					mapS.foods = mapS.foods.filter(food => !mapS.feed(element, food));
+				}
+			});
+		});
 		//On émet la position des joueurs
 		io.emit('map', mapS);
 	}, 25);

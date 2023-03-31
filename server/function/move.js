@@ -3,41 +3,26 @@ let xPos = 0;
 let yPos = 0;
 let dX = 0;
 let dY = 0;
-let speedX = 50;
-let speedY = 50;
+let truc;
+let speed = 2;
 
 export function move(mouseX, mouseY) {
-	if (mouseX - xPos > 300) {
-		speedX = 300;
-	} else if (mouseX - xPos < -300) {
-		speedX = 300;
-	} else if (mouseX - xPos > 100) {
-		speedX = 200;
-	} else if (mouseX - xPos < -100) {
-		speedX = 200;
+	truc = Math.sqrt(Math.pow(xPos - mouseX, 2) + Math.pow(yPos - mouseY, 2));
+
+	if (truc < 150) {
+		speed = 1;
 	} else {
-		speedX = 100;
-	}
-	if (mouseY - yPos > 300) {
-		speedY = 300;
-	} else if (mouseY - yPos < -300) {
-		speedY = 300;
-	} else if (mouseY - yPos > 100) {
-		speedY = 200;
-	} else if (mouseY - yPos < -100) {
-		speedY = 200;
-	} else {
-		speedY = 100;
+		speed = 2;
 	}
 
 	dX = mouseX - xPos;
 	dY = mouseY - yPos;
 
-	xPos += dX / speedX;
-	yPos += dY / speedY;
+	xPos += (dX / truc) * speed;
+	yPos += (dY / truc) * speed;
 
 	return {
-		x: xPos - sqSize / 2,
-		y: yPos - sqSize / 2,
+		x: xPos,
+		y: yPos,
 	};
 }
