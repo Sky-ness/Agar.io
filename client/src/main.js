@@ -1,6 +1,8 @@
 import { io } from 'socket.io-client';
 //import { resolveModuleName } from 'typescript';
 import { Maps } from '../../server/class/Maps.js';
+
+
 //              initialisation du contexte et canvas
 const canvas = document.querySelector('.gameCanvas'),
 	context = canvas.getContext('2d');
@@ -50,11 +52,11 @@ button.addEventListener('click', event => {
 });
 
 //-------------------------------------------------------------------------------
-let mapC = new Maps();
-
+let mapC = new Maps(),
+	mouse = { x: 0, y: 0 };
+	
 const scoreBoard = document.querySelector('.scoreBoard');
 
-let mouse = { x: 0, y: 0 };
 
 socket.on('map', mapS => {
 	mapC = mapS;
@@ -65,37 +67,36 @@ socket.on('deconnexion', () =>
 );
 canvas.addEventListener('mousemove', event => setMousePosition(event));
 
+requestAnimationFrame(render);
+
+
+function render() {
+	socket.emit('mousePosition', mouse);
+	showScoreBoard(scoreBoard);
+	drawMap(mapC);
+	requestAnimationFrame(render);
+}
+
 function setMousePosition(event) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = { x: event.clientX - rect.left, y: event.clientY - rect.top };
 }
 
-requestAnimationFrame(render);
-
-function render() {
-	context.clearRect(0, 0, canvas.width, canvas.height);
-	grid(70);
-	scoreBoard.innerHTML = '';
-	socket.emit('mousePosition', mouse);
-	for (let i = mapC.players.length - 1; i >= 0; i--) {
-		scoreBoard.innerHTML += `<li>${mapC.players[i].pseudo} : ${mapC.players[i].score}</li>`;
-	}
-	mapC.foods.forEach(element => {
-		drawCircle(element, element.color);
-	});
-	mapC.players.forEach(element => {
-		drawCircle(element, element.color);
-	});
-	requestAnimationFrame(render);
-}
-
-function drawCircle(circle, color /*pseudo*/) {
+function drawCircle(circle, color, pseudo) {
 	context.beginPath();
 	context.fillStyle = '' + color;
 	context.lineWidth = 4;
-	// context.fillText(pseudo, circle.x, circle.y);
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
 	context.fill();
+	context.fillStyle = 'white';
+	if(pseudo != null){
+		context.textAlign = 'center';
+		context.textBaseline = 'middle';
+		context.font = circle.score/3 + 'px comic sans ms';
+		context.fillText(pseudo, circle.x, circle.y);
+	}
+	
+
 }
 
 function grid(size) {
@@ -111,4 +112,26 @@ function grid(size) {
 	context.strokeStyle = 'rgba(204, 204, 204, 0.3)';
 	context.stroke();
 }
+
+function updateZoom(player){
+/*TODO*/
+}
+
+function drawMap(mapC){
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	grid(70);
+	mapC.foods.forEach(element => {
+		drawCircle(element, element.color,null);
+	});
+	mapC.players.forEach(element => {
+		drawCircle(element, element.color,element.pseudo);
+	});
+}
+function showScoreBoard(scoreBoard){
+	scoreBoard.innerHTML = '';
+	for (let i = mapC.players.length - 1; i >= 0; i--) {
+		scoreBoard.innerHTML += `<li>${mapC.players[i].pseudo} : ${mapC.players[i].score}</li>`;
+	}
+}
+
 //-----------------------------------------------------
