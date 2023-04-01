@@ -7,9 +7,8 @@ import { io } from 'socket.io-client';
 //import { resolveModuleName } from 'typescript';
 import { Maps } from '../../server/class/Maps.js';
 import { drawGame } from './function/drawGame.js';
-import { updateScale } from './function/drawGame.js';
+import { mainZoom, updateZoom } from './function/drawGame.js';
 import { mouse } from './function/drawGame.js';
-import { translate } from './function/drawGame.js';
 
 //                   initialisation du serveur coté client
 const socket = io();
@@ -19,15 +18,15 @@ const characterView = new CharacterView(document.querySelector('.character')),
 	replayView = new ReplayView(document.querySelector('.replay')),
 	creditsView = new CreditsView(document.querySelector('.credits'));
 
-let scale = 2;
 characterView.button.addEventListener('click', event => {
 	event.preventDefault();
 	characterView.hide();
-	socket.emit('pseudo', characterView.pseudo);
-	socket.emit('color', characterView.color);
-	socket.emit('play');
+	socket.emit('play', {
+		pseudo: characterView.pseudo,
+		color: characterView.color,
+	});
+	mainZoom();
 	scoreView.show();
-	//context.save();
 });
 
 replayView.button.addEventListener('click', event => {
@@ -51,7 +50,7 @@ function render() {
 
 function initSocketEvent() {
 	socket.on('map', mapS => (mapC = mapS));
-	socket.on('eatFood', player => updateScale(player));
+	socket.on('eatFood', console.log('je mange'));
 	socket.on('retry', () => {
 		replayView.show();
 		creditsView.show();

@@ -28,10 +28,13 @@ export class Maps {
 		this.players.push(player);
 	}
 	getPlayer(id) {
-		return this.players.filter(player => player.id == id)[0];
+		return this.players.find(player => player.id == id);
 	}
 	removePlayer(id) {
 		this.players = this.players.filter(player => player.id !== '' + id);
+	}
+	removeFood(feed) {
+		this.foods = this.foods.filter(food => food !== feed);
 	}
 	sortPlayer() {
 		this.players.sort((a, b) => a.score - b.score);

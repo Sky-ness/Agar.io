@@ -1,20 +1,20 @@
 const canvas = document.querySelector('.gameCanvas'),
 	context = canvas.getContext('2d'),
 	canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
-	//context.transform(1, 0, 0, -1, 0, canvas.height)
-let scale = 2;
+//context.transform(1, 0, 0, -1, 0, canvas.height)
+let zoom = 2;
 export let mouse = { x: 0, y: 0 };
 
 canvasResizeObserver.observe(canvas);
 canvas.addEventListener('mousemove', event => setMousePosition(event));
 
-export function drawGame(mapC, scoreBoard,id) {
+export function drawGame(mapC, scoreBoard, id) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	context.save();
-	if(mapC.players.find(el => el.id === id)){
-		translate(mapC.players.find(el => el.id === id))
-	}
 	grid(70);
+	context.save();
+	if (mapC.players.find(el => el.id === id)) {
+		translate(mapC.players.find(el => el.id === id));
+	}
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color, null);
 	});
@@ -22,15 +22,15 @@ export function drawGame(mapC, scoreBoard,id) {
 		drawCircle(element, element.color, element.pseudo);
 	});
 	showScoreBoard(mapC, scoreBoard);
+	mainZoom();
 	context.restore();
 }
-
-export function updateScale(player) {
-	
-	scale -= 0.01;
-	//context.scale(scale,scale );
-	context.save();
-	context.restore();
+export function mainZoom() {
+	context.scale(zoom, zoom);
+	console.log(zoom);
+}
+export function updateZoom() {
+	zoom -= 0.2;
 }
 
 function drawCircle(circle, color, pseudo) {
@@ -77,15 +77,14 @@ function resampleCanvas() {
 function setMousePosition(event) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = {
-		x: (event.clientX) - rect.left / scale,
-		y: event.clientY - rect.top / scale,
+		x: (event.clientX - rect.left) / zoom,
+		y: (event.clientY - rect.top) / zoom,
 	};
-
 }
 
-export function translate(player){
-	
-	context.translate(  -player.x + (canvas.width/2) ,  - player.y + (canvas.height /2));
-	
-	
+export function translate(player) {
+	context.translate(
+		(-player.x + canvas.width / zoom) / 2,
+		(-player.y + canvas.height / zoom) / 2
+	);
 }
