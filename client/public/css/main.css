@@ -1,19 +1,11 @@
-  .score {
-    position: absolute;
-    top: 30px ;
-    right: 30px;
-    background-color: rgba(48, 48, 48, 0.7) ;
-    border-radius: 15px;
-    color: white;
-    text-align: center;
-    padding: 15px;
+  .view{
+    text-align: center;    
   }
   .character{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    text-align: center;
     background-color: rgba(48, 48, 48, 1) ;
     border-radius: 15px;
   }
@@ -24,8 +16,26 @@
   .character h1{
     padding-top: 30px;
     font-size: 2em;
-    font-family: fantasy;
+    font-family: Arial, Helvetica, sans-serif;
     color: crimson;
+  }
+  .score {
+    position: absolute;
+    top: 30px ;
+    right: 30px;
+    background-color: rgba(48, 48, 48, 0.7) ;
+    border-radius: 15px;
+    color: white;
+    padding: 15px;
+  }
+  .replay{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(48, 48, 48, 0.7) ;
+    border-radius: 15px;
+    padding: 40px;
   }
   canvas {
     position: absolute;

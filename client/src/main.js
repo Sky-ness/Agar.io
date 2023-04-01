@@ -1,5 +1,5 @@
 import CharacterView from './view/CharacterView.js';
-import ScoreBoardView from './view/ScoreBoardView.js';
+import ScoreView from './view/ScoreView.js';
 import ReplayView from './view/ReplayView.js';
 
 import { io } from 'socket.io-client';
@@ -13,7 +13,7 @@ import { mouse } from './function/drawGame.js';
 const socket = io();
 
 const characterView = new CharacterView(document.querySelector('.character')),
-	scoreBoardView = new ScoreBoardView(document.querySelector('.score')),
+	scoreView = new ScoreView(document.querySelector('.score')),
 	replayView = new ReplayView(document.querySelector('.replay'));
 
 // 					character chooser
@@ -21,7 +21,7 @@ const characterView = new CharacterView(document.querySelector('.character')),
 characterView.button.addEventListener('click', event => {
 	event.preventDefault();
 	characterView.hide();
-	scoreBoardView.show();
+	scoreView.show();
 	socket.emit('pseudo', characterView.pseudo);
 	socket.emit('color', characterView.color);
 	socket.emit('play');
@@ -37,7 +37,7 @@ initSocketEvent();
 requestAnimationFrame(render);
 
 function render() {
-	drawGame(mapC, scoreBoardView.element);
+	drawGame(mapC, scoreView.scoreBoard);
 	socket.emit('mousePosition', mouse);
 	requestAnimationFrame(render);
 }

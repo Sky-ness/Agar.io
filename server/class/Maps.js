@@ -1,6 +1,5 @@
-import { generateRandomNumber } from '../function/random.js';
-import { Food } from './Food.js';
-import { randomColor } from '../function/random.js';
+import { generateRandomNumber, randomColor } from '../function/random.js';
+import { Blob } from './Blob.js';
 
 export class Maps {
 	players = [];
@@ -15,7 +14,7 @@ export class Maps {
 		while (this.foods.length < foodsMax) {
 			for (let i = 0; i <= generateRandomNumber(0, 20); i++) {
 				this.foods.push(
-					new Food(
+					new Blob(
 						randomColor(),
 						generateRandomNumber(0, this.width),
 						generateRandomNumber(0, this.height),
@@ -29,7 +28,7 @@ export class Maps {
 		this.players.push(player);
 	}
 	getPlayer(id) {
-		return this.players.filter(player => player.id == id)[0];;
+		return this.players.filter(player => player.id == id)[0];
 	}
 	removePlayer(id) {
 		this.players = this.players.filter(player => player.id !== '' + id);

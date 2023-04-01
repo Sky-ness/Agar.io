@@ -1,4 +1,4 @@
-export class Food {
+export class Blob {
 	constructor(color, x, y, score) {
 		this.color = color;
 		this.x = x;
