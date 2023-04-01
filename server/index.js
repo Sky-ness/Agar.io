@@ -24,7 +24,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(2000, 2000);
+let mapS = new Maps(1920, 1080);
 
 io.on('connection', socket => {
 	// par default le pseudo du joueur est la socket id si il ne compléte pas le champ
@@ -64,7 +64,7 @@ io.on('connection', socket => {
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
 				move(mouse.x, mouse.y, mapS.getPlayer(socket.id));
-			} else if(test === false){
+			} else if (test === false) {
 				socket.emit('retry');
 				test = true;
 			}
