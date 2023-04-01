@@ -24,7 +24,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(2500, 1200);
+let mapS = new Maps(1600, 1000);
 
 io.on('connection', socket => {
 	// par default le pseudo du joueur est la socket id si il ne compléte pas le champ
@@ -41,10 +41,10 @@ io.on('connection', socket => {
 	socket.on('color', color1 => {
 		color = color1;
 	});
+
 	console.log(`Nouvelle connexion du client ${socket.id}`);
 	socket.on('disconnect', () => {
 		console.log(`Déconnexion du client ${socket.id}`);
-		// on enleve le joueur quand il se déconnecte
 		mapS.removePlayer(socket.id);
 	});
 
@@ -62,8 +62,9 @@ io.on('connection', socket => {
 		);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
-				//On set la position du joueur en conséquence
 				move(mouse.x, mouse.y, mapS.getPlayer(socket.id));
+			} else {
+				socket.emit('retry');
 			}
 		});
 	});

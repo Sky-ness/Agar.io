@@ -1,18 +1,12 @@
 import View from './View.js';
 export default class CharacterView extends View {
-	color;
-	pseudo;
-
 	constructor(element) {
 		super(element);
-		this.color = this.element.querySelector('.color');
-		this.pseudo = this.element.querySelector('.pseudo');
-		this.element.querySelector('button').addEventListener('click', event => {
-			event.preventDefault();
-			socket.emit('pseudo', this.pseudo.value);
+		this.button = this.element.querySelector('button');
+		this.button.addEventListener('click', () => {
+			this.color = this.element.querySelector('.color').value;
+			this.pseudo = this.element.querySelector('.pseudo').value;
 		});
-	}
-	show() {
-		super.show();
+		this.show();
 	}
 }
