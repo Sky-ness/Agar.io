@@ -28,9 +28,13 @@ characterView.button.addEventListener('click', event => {
 	// context.scale(scale, scale);
 	// context.save();
 });
+
 replayView.button.addEventListener('click', event => {
 	event.preventDefault();
+	replayView.hide();
+	creditsView.hide();
 	characterView.show();
+	console.log('retry');
 });
 
 //-------------------------------------------------------------------------------
@@ -52,4 +56,6 @@ function initSocketEvent() {
 		replayView.show();
 		creditsView.show();
 	});
+
+	
 }

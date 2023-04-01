@@ -50,6 +50,7 @@ io.on('connection', socket => {
 
 	// Quand le joueur appuie sur play on créer un nouveau joueur sur le plateau
 	socket.on('play', () => {
+		let test = false;
 		mapS.addPlayer(
 			new Player(
 				name,
@@ -63,8 +64,9 @@ io.on('connection', socket => {
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
 				move(mouse.x, mouse.y, mapS.getPlayer(socket.id));
-			} else {
+			} else if(test === false){
 				socket.emit('retry');
+				test = true;
 			}
 		});
 	});

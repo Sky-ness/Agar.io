@@ -9,9 +9,9 @@ export function move(mouseX, mouseY, player) {
 	);
 
 	if (hypothenuse < 150) {
-		speed = 10;
+		speed = 1.5;
 	} else {
-		speed = 5;
+		speed = 2;
 	}
 
 	dX = mouseX - player.x;
