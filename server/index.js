@@ -24,7 +24,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(1600, 1000);
+let mapS = new Maps(2000, 2000);
 
 io.on('connection', socket => {
 	// par default le pseudo du joueur est la socket id si il ne compléte pas le champ
@@ -94,7 +94,7 @@ io.on('connection', socket => {
 				if (mapS.feed(element, el)) {
 					element.score += 1;
 					mapS.foods = mapS.foods.filter(food => !mapS.feed(element, food));
-					//io.emit('eatFood');
+					io.emit('eatFood', element);
 				}
 			});
 		});

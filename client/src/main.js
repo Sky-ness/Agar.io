@@ -9,6 +9,8 @@ import { Maps } from '../../server/class/Maps.js';
 import { drawGame } from './function/drawGame.js';
 import { updateScale } from './function/drawGame.js';
 import { mouse } from './function/drawGame.js';
+import { translate } from './function/drawGame.js';
+
 
 //                   initialisation du serveur coté client
 const socket = io();
@@ -18,6 +20,7 @@ const characterView = new CharacterView(document.querySelector('.character')),
 	replayView = new ReplayView(document.querySelector('.replay')),
 	creditsView = new CreditsView(document.querySelector('.credits'));
 
+	let scale = 2;
 characterView.button.addEventListener('click', event => {
 	event.preventDefault();
 	characterView.hide();
@@ -25,8 +28,7 @@ characterView.button.addEventListener('click', event => {
 	socket.emit('color', characterView.color);
 	socket.emit('play');
 	scoreView.show();
-	// context.scale(scale, scale);
-	// context.save();
+	//context.save();
 });
 
 replayView.button.addEventListener('click', event => {
@@ -40,18 +42,19 @@ replayView.button.addEventListener('click', event => {
 //-------------------------------------------------------------------------------
 let mapC = new Maps();
 
+
 initSocketEvent();
 requestAnimationFrame(render);
 
 function render() {
-	drawGame(mapC, scoreView.scoreBoard);
+	drawGame(mapC, scoreView.scoreBoard,socket.id);
 	socket.emit('mousePosition', mouse);
 	requestAnimationFrame(render);
 }
 
 function initSocketEvent() {
 	socket.on('map', mapS => (mapC = mapS));
-	// Update scale pas encore fonctionnel //socket.on('eatFood', () => updateScale());
+	socket.on('eatFood', (player) => updateScale(player));
 	socket.on('retry', () => {
 		replayView.show();
 		creditsView.show();

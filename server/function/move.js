@@ -1,9 +1,10 @@
 let dX = 0;
 let dY = 0;
 let hypothenuse;
-let speed = 4;
+let speed = 2;
 
 export function move(mouseX, mouseY, player) {
+	
 	hypothenuse = Math.sqrt(
 		Math.pow(player.x - mouseX, 2) + Math.pow(player.y - mouseY, 2)
 	);
