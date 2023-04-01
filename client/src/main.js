@@ -47,7 +47,7 @@ function render() {
 
 function initSocketEvent() {
 	socket.on('map', mapS => (mapC = mapS));
-	socket.on('eatFood', () => updateScale());
+	// Update scale pas encore fonctionnel //socket.on('eatFood', () => updateScale());
 	socket.on('retry', () => {
 		replayView.show();
 		creditsView.show();

@@ -72,7 +72,7 @@ io.on('connection', socket => {
 		//les joueurs sont trier du min au max
 		mapS.sortPlayer();
 		// la nourriture est regénérer si elle est inférieur a 100
-		mapS.randomFood(200);
+		mapS.randomFood(100);
 
 		mapS.players.forEach(element => {
 			mapS.players.forEach(el => {
@@ -90,9 +90,9 @@ io.on('connection', socket => {
 		mapS.players.forEach(element => {
 			mapS.foods.forEach(el => {
 				if (mapS.feed(element, el)) {
-					element.score += 2;
+					element.score += 1;
 					mapS.foods = mapS.foods.filter(food => !mapS.feed(element, food));
-					io.emit('eatFood');
+					//io.emit('eatFood');
 				}
 			});
 		});

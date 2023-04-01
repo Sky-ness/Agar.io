@@ -12,7 +12,7 @@ export class Maps {
 	}
 	randomFood(foodsMax) {
 		while (this.foods.length < foodsMax) {
-			for (let i = 0; i <= generateRandomNumber(0, 20); i++) {
+			for (let i = 0; i <= generateRandomNumber(0, 10); i++) {
 				this.foods.push(
 					new Blob(
 						randomColor(),
