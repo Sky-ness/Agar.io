@@ -60,6 +60,7 @@ io.on('connection', socket => {
 		mapS.sortPlayer();
 		mapS.randomFood(100);
 		feedPlayer(mapS);
+		// elle ne marche pas cette ligne
 		if (feedFood(mapS)) socket.emit('eatFood');
 		io.emit('map', mapS);
 	}, 25);
