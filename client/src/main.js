@@ -1,6 +1,7 @@
 import CharacterView from './view/CharacterView.js';
 import ScoreView from './view/ScoreView.js';
 import ReplayView from './view/ReplayView.js';
+import CreditsView from './view/CreditsView.js';
 
 import { io } from 'socket.io-client';
 //import { resolveModuleName } from 'typescript';
@@ -14,20 +15,22 @@ const socket = io();
 
 const characterView = new CharacterView(document.querySelector('.character')),
 	scoreView = new ScoreView(document.querySelector('.score')),
-	replayView = new ReplayView(document.querySelector('.replay'));
-
-// 					character chooser
+	replayView = new ReplayView(document.querySelector('.replay')),
+	creditsView = new CreditsView(document.querySelector('.credits'));
 
 characterView.button.addEventListener('click', event => {
 	event.preventDefault();
 	characterView.hide();
-	scoreView.show();
 	socket.emit('pseudo', characterView.pseudo);
 	socket.emit('color', characterView.color);
 	socket.emit('play');
-
+	scoreView.show();
 	// context.scale(scale, scale);
 	// context.save();
+});
+replayView.button.addEventListener('click', event => {
+	event.preventDefault();
+	characterView.show();
 });
 
 //-------------------------------------------------------------------------------
@@ -45,5 +48,8 @@ function render() {
 function initSocketEvent() {
 	socket.on('map', mapS => (mapC = mapS));
 	socket.on('eatFood', () => updateScale());
-	socket.on('retry', () => replayView.show());
+	socket.on('retry', () => {
+		replayView.show();
+		creditsView.show();
+	});
 }
