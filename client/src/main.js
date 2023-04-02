@@ -6,8 +6,8 @@ import CreditsView from './view/CreditsView.js';
 import { io } from 'socket.io-client';
 //import { resolveModuleName } from 'typescript';
 import { Maps } from '../../server/class/Maps.js';
-import { drawGame } from './function/drawGame.js';
-// import { mainZoom, updateZoom } from './function/drawGame.js';
+import { drawGame  } from './function/drawGame.js';
+import { updateZoom,mainZoom } from './function/drawGame.js';
 import { mouse } from './function/drawGame.js';
 
 //                   initialisation du serveur coté client
@@ -26,7 +26,6 @@ characterView.button.addEventListener('click', event => {
 		color: characterView.color,
 	});
 	
-	// mainZoom();
 	scoreView.show();
 });
 
@@ -54,7 +53,11 @@ function render() {
 
 function initSocketEvent() {
 	socket.on('map', mapS => (mapC = mapS));
-	socket.on('eatFood', console.log('je mange'));
+	socket.on('eatFood', () => {
+		console.log('je mange');
+		updateZoom();
+		mainZoom();
+});
 	socket.on('retry', () => {
 		replayView.show();
 		creditsView.show();

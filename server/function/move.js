@@ -1,6 +1,6 @@
 import Vector from "../class/Vector.js";
 
-const speed = 10;
+const speed = 5;
 
 export function move( player,mouseX, mouseY,canvas) {
 	

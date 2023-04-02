@@ -10,14 +10,3 @@ export function feedPlayer(mapS) {
 		});
 	});
 }
-export function feedFood(mapS) {
-	mapS.players.forEach(element => {
-		mapS.foods.forEach(el => {
-			if (mapS.feed(element, el)) {
-				element.score += 1;
-				mapS.removeFood(el);
-				return true;
-			}
-		});
-	});
-}

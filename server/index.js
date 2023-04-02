@@ -9,7 +9,7 @@ import { Player } from './class/Player.js';
 
 import { generateRandomNumber } from './function/random.js';
 import { move } from './function/move.js';
-import { feedFood, feedPlayer } from './function/feed.js';
+import { feedPlayer } from './function/feed.js';
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -54,12 +54,21 @@ io.on('connection', socket => {
 			}
 		});
 	});
-	setInterval(() => {
+	setInterval(()=>{
 		mapS.sortPlayer();
 		mapS.randomFood(100);
 		feedPlayer(mapS);
-		// elle ne marche pas cette ligne
-		if (feedFood(mapS)) socket.emit('eatFood');
+		
+		// il faudra exporter cette function ailleurs
+		mapS.players.forEach(element => {
+			mapS.foods.forEach(el => {
+				if (mapS.feed(element, el)) {
+					element.score += 1;
+					mapS.removeFood(el);
+					socket.emit('eatFood');
+				}
+			});
+		});
 		io.emit('map', mapS);
-	}, 25);
+		}, 25);
 });

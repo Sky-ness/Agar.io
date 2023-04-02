@@ -15,7 +15,7 @@ canvas.addEventListener('mousemove', event => setMousePosition(event));
 export function drawGame(mapC, scoreBoard, id) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	grid(70);
-	// context.save();
+	context.save();
 	// if (mapC.players.find(el => el.id === id)) {
 	// 	translate(mapC.players.find(el => el.id === id));
 	// }
@@ -26,17 +26,17 @@ export function drawGame(mapC, scoreBoard, id) {
 		drawCircle(element, element.color, element.pseudo);
 	});
 	showScoreBoard(mapC, scoreBoard);
-	// mainZoom();
 	// context.restore();
 }
 
-// export function mainZoom() {
-// 	context.scale(zoom, zoom);
-// 	console.log(zoom);
-// }
-// export function updateZoom() {
-// 	zoom -= 0.2;
-// }
+export function mainZoom() {
+	context.restore();
+	context.scale(zoom, zoom);
+	console.log(zoom);
+}
+export function updateZoom() {
+	zoom -= 0.2;
+}
 
 function drawCircle(circle, color, pseudo) {
 	context.beginPath();
