@@ -1,9 +1,13 @@
-const canvas = document.querySelector('.gameCanvas'),
-	context = canvas.getContext('2d'),
+export let mouse = { x: 0, y: 0 };
+export const canvas = document.querySelector('.gameCanvas');
+	
+
+const context = canvas.getContext('2d'),
 	canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
 //context.transform(1, 0, 0, -1, 0, canvas.height)
+
 let zoom = 2;
-export let mouse = { x: 0, y: 0 };
+
 
 canvasResizeObserver.observe(canvas);
 canvas.addEventListener('mousemove', event => setMousePosition(event));
@@ -11,10 +15,10 @@ canvas.addEventListener('mousemove', event => setMousePosition(event));
 export function drawGame(mapC, scoreBoard, id) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	grid(70);
-	context.save();
-	if (mapC.players.find(el => el.id === id)) {
-		translate(mapC.players.find(el => el.id === id));
-	}
+	// context.save();
+	// if (mapC.players.find(el => el.id === id)) {
+	// 	translate(mapC.players.find(el => el.id === id));
+	// }
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color, null);
 	});
@@ -22,16 +26,17 @@ export function drawGame(mapC, scoreBoard, id) {
 		drawCircle(element, element.color, element.pseudo);
 	});
 	showScoreBoard(mapC, scoreBoard);
-	mainZoom();
-	context.restore();
+	// mainZoom();
+	// context.restore();
 }
-export function mainZoom() {
-	context.scale(zoom, zoom);
-	console.log(zoom);
-}
-export function updateZoom() {
-	zoom -= 0.2;
-}
+
+// export function mainZoom() {
+// 	context.scale(zoom, zoom);
+// 	console.log(zoom);
+// }
+// export function updateZoom() {
+// 	zoom -= 0.2;
+// }
 
 function drawCircle(circle, color, pseudo) {
 	context.beginPath();
@@ -77,14 +82,14 @@ function resampleCanvas() {
 function setMousePosition(event) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = {
-		x: (event.clientX - rect.left) / zoom,
-		y: (event.clientY - rect.top) / zoom,
+		x: (event.clientX - rect.left),
+		y: (event.clientY - rect.top) ,
 	};
 }
 
 export function translate(player) {
 	context.translate(
-		(-player.x + canvas.width / zoom) / 2,
-		(-player.y + canvas.height / zoom) / 2
+		(canvas.width / 2) - player.x,
+		(canvas.height / 2) - player.y
 	);
 }

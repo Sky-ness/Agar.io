@@ -16,8 +16,6 @@ const httpServer = http.createServer(app);
 const io = new IOServer(httpServer);
 addWebpackMiddleware(app);
 
-let socket1;
-
 // 					page principal du jeu
 app.get('/', app.use(express.static('client/public')));
 
@@ -29,7 +27,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(1920, 1080);
+let mapS = new Maps(1000, 900);
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -50,7 +48,7 @@ io.on('connection', socket => {
 		);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
-				move(mouse.x, mouse.y, mapS.getPlayer(socket.id));
+				move(mapS.getPlayer(socket.id),mouse.x,mouse.y,{width:mapS.width,height:mapS.height});
 			} else {
 				socket.emit('retry');
 			}

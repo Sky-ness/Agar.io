@@ -1,4 +1,4 @@
-export default class vector {
+export default class Vector {
 	constructor(x1, y1, x2, y2, canvas) {
 		this.x1 = x1;
 		this.x2 = x2;
@@ -14,11 +14,11 @@ export default class vector {
 	}
 
 	distanceX() {
-		return this.x2 - this.x1 - this.canvas.width / 2;
+		return /* (this.canvas.width / 2) -*/  (this.x2 - this.x1) ;
 	}
 
 	distanceY() {
-		return this.y2 - this.y1 - this.canvas.height / 2;
+		return /* (this.canvas.height / 2) -*/ (this.y2 - this.y1);
 	}
 
 	normalizeX() {

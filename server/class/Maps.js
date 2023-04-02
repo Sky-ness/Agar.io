@@ -31,7 +31,7 @@ export class Maps {
 		return this.players.find(player => player.id == id);
 	}
 	removePlayer(id) {
-		this.players = this.players.filter(player => player.id !== '' + id);
+		this.players = this.players.filter(player => player.id !== id);
 	}
 	removeFood(feed) {
 		this.foods = this.foods.filter(food => food !== feed);

@@ -1,23 +1,11 @@
-let dX = 0;
-let dY = 0;
-let hypothenuse;
-let speed = 2;
+import Vector from "../class/Vector.js";
 
-export function move(mouseX, mouseY, player) {
+const speed = 10;
+
+export function move( player,mouseX, mouseY,canvas) {
 	
-	hypothenuse = Math.sqrt(
-		Math.pow(player.x - mouseX, 2) + Math.pow(player.y - mouseY, 2)
-	);
+	let v = new Vector(player.x,player.y,mouseX,mouseY,canvas)
 
-	if (hypothenuse < 150) {
-		speed = 1.5;
-	} else {
-		speed = 2;
-	}
-
-	dX = mouseX - player.x;
-	dY = mouseY - player.y;
-
-	player.x += (dX / hypothenuse) * speed;
-	player.y += (dY / hypothenuse) * speed;
+	player.x += v.normalizeX() / (player.score / 10) * speed;
+	player.y += v.normalizeY() / (player.score / 10) * speed;
 }

@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 //import { resolveModuleName } from 'typescript';
 import { Maps } from '../../server/class/Maps.js';
 import { drawGame } from './function/drawGame.js';
-import { mainZoom, updateZoom } from './function/drawGame.js';
+// import { mainZoom, updateZoom } from './function/drawGame.js';
 import { mouse } from './function/drawGame.js';
 
 //                   initialisation du serveur coté client
@@ -25,15 +25,19 @@ characterView.button.addEventListener('click', event => {
 		pseudo: characterView.pseudo,
 		color: characterView.color,
 	});
-	mainZoom();
+	
+	// mainZoom();
 	scoreView.show();
 });
 
 replayView.button.addEventListener('click', event => {
 	event.preventDefault();
+	socket.emit('play', {
+		pseudo: characterView.pseudo,
+		color: characterView.color,
+	});
 	replayView.hide();
 	creditsView.hide();
-	characterView.show();
 });
 
 //-------------------------------------------------------------------------------
