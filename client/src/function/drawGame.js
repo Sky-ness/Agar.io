@@ -20,11 +20,11 @@ export function drawGame(mapC, scoreBoard, id) {
 	}
 	grid(70);
 	context.save();
+	mainZoom();
 	if (mapC.players.find(el => el.id === id)) {
 		translate(mapC.players.find(el => el.id === id));
 		if (mapC.players.find(el => el.id === id).score != ancienScore) {
 			updateZoom();
-			mainZoom();
 			ancienScore = mapC.players.find(el => el.id === id).score;
 		}
 	}
