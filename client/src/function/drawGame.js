@@ -94,13 +94,13 @@ let decalageY = 0;
 function setMousePosition(event) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = {
-		x: event.clientX - rect.left - decalageX,
-		y: event.clientY - rect.top - decalageY,
+		x: event.clientX / zoom - rect.left - decalageX,
+		y: event.clientY / zoom - rect.top - decalageY,
 	};
 }
 
 export function translate(player) {
-	decalageX = canvas.width / 2 - player.x;
-	decalageY = canvas.height / 2 - player.y;
+	decalageX = canvas.width / 2 / zoom - (player.x);
+	decalageY = canvas.height / 2 / zoom - (player.y);
 	context.translate(decalageX, decalageY);
 }
