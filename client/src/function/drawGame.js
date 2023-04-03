@@ -1,6 +1,5 @@
 export let mouse = { x: 0, y: 0 };
 export const canvas = document.querySelector('.gameCanvas');
-	
 
 const context = canvas.getContext('2d'),
 	canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
@@ -8,17 +7,28 @@ const context = canvas.getContext('2d'),
 
 let zoom = 2;
 
-
 canvasResizeObserver.observe(canvas);
 canvas.addEventListener('mousemove', event => setMousePosition(event));
 
+let test = true;
+let ancienScore;
 export function drawGame(mapC, scoreBoard, id) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
+	if (test && mapC.players.find(el => el.id === id)) {
+		ancienScore = mapC.players.find(el => el.id === id).score;
+		test = false;
+	}
 	grid(70);
 	context.save();
-	// if (mapC.players.find(el => el.id === id)) {
-	// 	translate(mapC.players.find(el => el.id === id));
-	// }
+	if (mapC.players.find(el => el.id === id)) {
+		translate(mapC.players.find(el => el.id === id));
+		if (mapC.players.find(el => el.id === id).score != ancienScore) {
+			updateZoom();
+			mainZoom();
+			ancienScore = mapC.players.find(el => el.id === id).score;
+		}
+	}
+
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color, null);
 	});
@@ -26,16 +36,15 @@ export function drawGame(mapC, scoreBoard, id) {
 		drawCircle(element, element.color, element.pseudo);
 	});
 	showScoreBoard(mapC, scoreBoard);
-	// context.restore();
+	context.restore();
 }
 
 export function mainZoom() {
-	context.restore();
 	context.scale(zoom, zoom);
 	console.log(zoom);
 }
 export function updateZoom() {
-	zoom -= 0.2;
+	zoom -= 0.01;
 }
 
 function drawCircle(circle, color, pseudo) {
@@ -79,17 +88,19 @@ function resampleCanvas() {
 	canvas.height = canvas.clientHeight;
 }
 
+let decalageX = 0;
+let decalageY = 0;
+
 function setMousePosition(event) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = {
-		x: (event.clientX - rect.left),
-		y: (event.clientY - rect.top) ,
+		x: event.clientX - rect.left - decalageX,
+		y: event.clientY - rect.top - decalageY,
 	};
 }
 
 export function translate(player) {
-	context.translate(
-		(canvas.width / 2) - player.x,
-		(canvas.height / 2) - player.y
-	);
+	decalageX = canvas.width / 2 - player.x;
+	decalageY = canvas.height / 2 - player.y;
+	context.translate(decalageX, decalageY);
 }

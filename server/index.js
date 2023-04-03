@@ -48,27 +48,31 @@ io.on('connection', socket => {
 		);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
-				move(mapS.getPlayer(socket.id),mouse.x,mouse.y,{width:mapS.width,height:mapS.height});
+				move(mapS.getPlayer(socket.id), mouse.x, mouse.y, {
+					width: mapS.width,
+					height: mapS.height,
+				});
 			} else {
 				socket.emit('retry');
 			}
 		});
 	});
-	setInterval(()=>{
+	setInterval(() => {
 		mapS.sortPlayer();
 		mapS.randomFood(100);
-		feedPlayer(mapS);
-		
-		// il faudra exporter cette function ailleurs
-		mapS.players.forEach(element => {
-			mapS.foods.forEach(el => {
-				if (mapS.feed(element, el)) {
-					element.score += 1;
-					mapS.removeFood(el);
+		mapS.foods.forEach(element => {
+			mapS.players.forEach(el => {
+				if (mapS.feed(el, element)) {
+					el.score += 1;
 					socket.emit('eatFood');
+					mapS.removeFood(element);
+					console.log('emit eat');
 				}
 			});
 		});
+		feedPlayer(mapS);
+
+		// il faudra exporter cette function ailleurs
 		io.emit('map', mapS);
-		}, 25);
+	}, 25);
 });
