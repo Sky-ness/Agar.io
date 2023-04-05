@@ -27,7 +27,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(1000, 900);
+let mapS = new Maps(2000, 2000);
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -36,6 +36,7 @@ io.on('connection', socket => {
 		mapS.removePlayer(socket.id);
 	});
 	socket.on('play', tag => {
+		let test = false;
 		mapS.addPlayer(
 			new Player(
 				socket.id,
@@ -52,8 +53,9 @@ io.on('connection', socket => {
 					width: mapS.width,
 					height: mapS.height,
 				});
-			} else {
+			} else if (test === false) {
 				socket.emit('retry');
+				test = true;
 			}
 		});
 	});
@@ -66,7 +68,6 @@ io.on('connection', socket => {
 					el.score += 1;
 					socket.emit('eatFood');
 					mapS.removeFood(element);
-					console.log('emit eat');
 				}
 			});
 		});

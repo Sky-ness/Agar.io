@@ -5,7 +5,7 @@ const context = canvas.getContext('2d'),
 	canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
 //context.transform(1, 0, 0, -1, 0, canvas.height)
 
-let zoom = 2;
+export let zoom = 2;
 
 canvasResizeObserver.observe(canvas);
 canvas.addEventListener('mousemove', event => setMousePosition(event));
@@ -14,20 +14,22 @@ let test = true;
 let ancienScore;
 export function drawGame(mapC, scoreBoard, id) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
+	//grid(70);
 	if (test && mapC.players.find(el => el.id === id)) {
 		ancienScore = mapC.players.find(el => el.id === id).score;
 		test = false;
 	}
-	grid(70);
+
 	context.save();
 	mainZoom();
 	if (mapC.players.find(el => el.id === id)) {
 		translate(mapC.players.find(el => el.id === id));
 		if (mapC.players.find(el => el.id === id).score != ancienScore) {
-			updateZoom();
+			updateZoom(mapC.players.find(el => el.id === id).score - ancienScore);
 			ancienScore = mapC.players.find(el => el.id === id).score;
 		}
 	}
+	grid(70, mapC);
 
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color, null);
@@ -43,8 +45,12 @@ export function mainZoom() {
 	context.scale(zoom, zoom);
 	console.log(zoom);
 }
-export function updateZoom() {
-	zoom -= 0.01;
+export function updateZoom(scoreDIff) {
+	zoom -= 0.01 * scoreDIff;
+}
+
+export function resetZoom() {
+	zoom = 2;
 }
 
 function drawCircle(circle, color, pseudo) {
@@ -62,15 +68,15 @@ function drawCircle(circle, color, pseudo) {
 	}
 }
 
-function grid(size) {
+export function grid(size, mapC) {
 	context.lineWidth = 2;
-	for (var x = 0; x <= canvas.width; x += size) {
+	for (var x = 0; x <= mapC.width; x += size) {
 		context.moveTo(x, 0);
-		context.lineTo(x, canvas.height);
+		context.lineTo(x, mapC.height);
 	}
-	for (var y = 0; y <= canvas.height; y += size) {
+	for (var y = 0; y <= mapC.height; y += size) {
 		context.moveTo(0, y);
-		context.lineTo(canvas.width, y);
+		context.lineTo(mapC.width, y);
 	}
 	context.strokeStyle = 'rgba(204, 204, 204, 0.3)';
 	context.stroke();
@@ -100,7 +106,7 @@ function setMousePosition(event) {
 }
 
 export function translate(player) {
-	decalageX = canvas.width / 2 / zoom - (player.x);
-	decalageY = canvas.height / 2 / zoom - (player.y);
+	decalageX = canvas.width / 2 / zoom - player.x;
+	decalageY = canvas.height / 2 / zoom - player.y;
 	context.translate(decalageX, decalageY);
 }

@@ -9,6 +9,8 @@ import { Maps } from '../../server/class/Maps.js';
 import { drawGame } from './function/drawGame.js';
 import { updateZoom, mainZoom } from './function/drawGame.js';
 import { mouse } from './function/drawGame.js';
+import { resetZoom } from './function/drawGame.js';
+import { grid } from './function/drawGame.js';
 
 //                   initialisation du serveur coté client
 const socket = io();
@@ -31,12 +33,9 @@ characterView.button.addEventListener('click', event => {
 
 replayView.button.addEventListener('click', event => {
 	event.preventDefault();
-	socket.emit('play', {
-		pseudo: characterView.pseudo,
-		color: characterView.color,
-	});
 	replayView.hide();
 	creditsView.hide();
+	characterView.show();
 });
 
 //-------------------------------------------------------------------------------
@@ -53,13 +52,10 @@ function render() {
 
 function initSocketEvent() {
 	socket.on('map', mapS => (mapC = mapS));
-	socket.on('eatFood', () => {
-		console.log('je mange');
-		//updateZoom();
-		//mainZoom();
-	});
+
 	socket.on('retry', () => {
 		replayView.show();
 		creditsView.show();
+		resetZoom();
 	});
 }
