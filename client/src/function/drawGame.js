@@ -28,7 +28,6 @@ export function drawGame(mapC, scoreBoard, id) {
 			ancienScore = mapC.players.find(el => el.id === id).score;
 		}
 	}
-
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color, null);
 	});
@@ -41,7 +40,6 @@ export function drawGame(mapC, scoreBoard, id) {
 
 export function mainZoom() {
 	context.scale(zoom, zoom);
-	console.log(zoom);
 }
 export function updateZoom() {
 	zoom -= 0.01;
@@ -100,7 +98,7 @@ function setMousePosition(event) {
 }
 
 export function translate(player) {
-	decalageX = canvas.width / 2 / zoom - (player.x);
-	decalageY = canvas.height / 2 / zoom - (player.y);
+	decalageX = canvas.width / 2 / zoom - player.x;
+	decalageY = canvas.height / 2 / zoom - player.y;
 	context.translate(decalageX, decalageY);
 }

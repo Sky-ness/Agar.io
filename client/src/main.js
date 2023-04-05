@@ -7,7 +7,6 @@ import { io } from 'socket.io-client';
 //import { resolveModuleName } from 'typescript';
 import { Maps } from '../../server/class/Maps.js';
 import { drawGame } from './function/drawGame.js';
-import { updateZoom, mainZoom } from './function/drawGame.js';
 import { mouse } from './function/drawGame.js';
 
 //                   initialisation du serveur coté client
