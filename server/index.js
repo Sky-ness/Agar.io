@@ -27,7 +27,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(1000, 900);
+let mapS = new Maps(2000, 2000);
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -36,6 +36,7 @@ io.on('connection', socket => {
 		mapS.removePlayer(socket.id);
 	});
 	socket.on('play', tag => {
+		let test = false;
 		mapS.addPlayer(
 			new Player(
 				socket.id,
@@ -49,8 +50,9 @@ io.on('connection', socket => {
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
 				move(mapS.getPlayer(socket.id), mouse.x, mouse.y, mapS);
-			} else if (mapS.getPlayer(socket.id) == null) {
+			} else if (test === false) {
 				socket.emit('retry');
+				test = true;
 			}
 		});
 	});
