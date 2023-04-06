@@ -1,3 +1,4 @@
+import { randomColor } from '../../../server/function/random.js';
 import { socket } from '../main.js';
 
 const canvas = document.querySelector('.gameCanvas');
@@ -35,7 +36,11 @@ export function drawGame(mapC, scoreBoard, id) {
 		drawCircle(element, element.color, null);
 	});
 	mapC.players.forEach(element => {
-		drawCircle(element, element.color, element.pseudo);
+		if (!element.isFeedable) {
+			drawCircle(element, randomColor(), element.pseudo);
+		} else {
+			drawCircle(element, element.color, element.pseudo);
+		}
 	});
 	showScoreBoard(mapC, scoreBoard);
 	context.restore();

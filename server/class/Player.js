@@ -6,6 +6,7 @@ export class Player extends Blob {
 		this.id = id;
 		this.pseudo = pseudo;
 		this.vector = null;
-		this.feedable = false;
+		this.isFeedable = false;
+		this.lose = true;
 	}
 }

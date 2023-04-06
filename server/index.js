@@ -10,7 +10,7 @@ import Vector from './class/Vector.js';
 
 import { generateRandomNumber } from './function/random.js';
 import { move } from './function/move.js';
-import { feed } from './function/feed.js';
+import { feed, invincibility } from './function/feed.js';
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -37,7 +37,7 @@ io.on('connection', socket => {
 		mapS.removePlayer(socket.id);
 	});
 	socket.on('play', tag => {
-		let test = false;
+		let lose = false;
 		mapS.addPlayer(
 			new Player(
 				socket.id,
@@ -48,15 +48,16 @@ io.on('connection', socket => {
 				20
 			)
 		);
+		invincibility(3, mapS.getPlayer(socket.id));
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
 				mapS.getPlayer(socket.id).vector = new Vector(
 					mapS.getPlayer(socket.id),
 					mouse
 				);
-			} else if (test === false) {
+			} else if (lose === false) {
 				socket.emit('retry');
-				test = true;
+				lose = true;
 			}
 		});
 	});
