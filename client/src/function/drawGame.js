@@ -1,27 +1,27 @@
-export let mouse = { x: 0, y: 0 };
-export const canvas = document.querySelector('.gameCanvas');
+import { socket } from '../main.js';
+
+const canvas = document.querySelector('.gameCanvas');
 
 const context = canvas.getContext('2d'),
 	canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
-//context.transform(1, 0, 0, -1, 0, canvas.height)
 
-export let zoom = 2;
+let mouse;
+let zoom = 2;
+let originX = 0;
+let originY = 0;
+let ancienScore = 20;
 
 canvasResizeObserver.observe(canvas);
-canvas.addEventListener('mousemove', event => setMousePosition(event));
+canvas.addEventListener('mousemove', event => {
+	setMousePosition(event);
+	socket.emit('mousePosition', mouse);
+});
 
-let test = true;
-let ancienScore;
 export function drawGame(mapC, scoreBoard, id) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	//grid(70);
-	if (test && mapC.players.find(el => el.id === id)) {
-		ancienScore = mapC.players.find(el => el.id === id).score;
-		test = false;
-	}
-
 	context.save();
 	mainZoom();
+	//--------------------------bordel-------------------------------------------
 	if (mapC.players.find(el => el.id === id)) {
 		translate(mapC.players.find(el => el.id === id));
 		if (mapC.players.find(el => el.id === id).score != ancienScore) {
@@ -29,6 +29,7 @@ export function drawGame(mapC, scoreBoard, id) {
 			ancienScore = mapC.players.find(el => el.id === id).score;
 		}
 	}
+	//---------------------------------------------------------------------------
 	grid(70, mapC);
 	mapC.foods.forEach(element => {
 		drawCircle(element, element.color, null);
@@ -40,7 +41,7 @@ export function drawGame(mapC, scoreBoard, id) {
 	context.restore();
 }
 
-export function mainZoom() {
+function mainZoom() {
 	context.scale(zoom, zoom);
 }
 export function updateZoom(scoreDIff) {
@@ -66,7 +67,7 @@ function drawCircle(circle, color, pseudo) {
 	}
 }
 
-export function grid(size, mapC) {
+function grid(size, mapC) {
 	context.lineWidth = 2;
 	for (var x = 0; x <= mapC.width; x += size) {
 		context.moveTo(x, 0);
@@ -92,19 +93,16 @@ function resampleCanvas() {
 	canvas.height = canvas.clientHeight;
 }
 
-let decalageX = 0;
-let decalageY = 0;
+function translate(player) {
+	originX = canvas.width / 2 / zoom - player.x;
+	originY = canvas.height / 2 / zoom - player.y;
+	context.translate(originX, originY);
+}
 
 function setMousePosition(event) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = {
-		x: event.clientX / zoom - rect.left - decalageX,
-		y: event.clientY / zoom - rect.top - decalageY,
+		x: event.clientX / zoom - rect.left - originX,
+		y: event.clientY / zoom - rect.top - originY,
 	};
-}
-
-export function translate(player) {
-	decalageX = canvas.width / 2 / zoom - player.x;
-	decalageY = canvas.height / 2 / zoom - player.y;
-	context.translate(decalageX, decalageY);
 }

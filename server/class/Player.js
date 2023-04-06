@@ -5,6 +5,7 @@ export class Player extends Blob {
 		super(color, x, y, score);
 		this.id = id;
 		this.pseudo = pseudo;
+		this.vector = null;
 		this.feedable = false;
 	}
 }

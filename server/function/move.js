@@ -1,12 +1,11 @@
-import Vector from '../class/Vector.js';
-
 const speed = 10;
 
-export function move(player, mouseX, mouseY, mapS) {
-	let v = new Vector(player.x, player.y, mouseX, mouseY, mapS);
+export function move(vector, player, mapS) {
+	let moveX = (vector.normalizeX() / (player.score / 10)) * speed;
+	let moveY = (vector.normalizeY() / (player.score / 10)) * speed;
 
-	const moveX = (v.normalizeX() / (player.score / 10)) * speed;
-	const moveY = (v.normalizeY() / (player.score / 10)) * speed;
+	// if (vector.normalizeX() <= 0.1 && vector.normalizeX() >= -0.1) moveX = 0;
+	// if (vector.normalizeY() <= 0.1 && vector.normalizeY() >= -0.1) moveY = 0;
 
 	if (!mapS.outOfBoundsX(player)) player.x += moveX;
 	else if (player.x <= 0 && moveX >= 0) player.x += moveX;

@@ -6,6 +6,7 @@ import addWebpackMiddleware from './utils/addWebpackMiddleware.js';
 
 import { Maps } from './class/Maps.js';
 import { Player } from './class/Player.js';
+import Vector from './class/Vector.js';
 
 import { generateRandomNumber } from './function/random.js';
 import { move } from './function/move.js';
@@ -27,7 +28,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(2000, 2000);
+let mapS = new Maps(500, 500);
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -49,7 +50,10 @@ io.on('connection', socket => {
 		);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
-				move(mapS.getPlayer(socket.id), mouse.x, mouse.y, mapS);
+				mapS.getPlayer(socket.id).vector = new Vector(
+					mapS.getPlayer(socket.id),
+					mouse
+				);
 			} else if (test === false) {
 				socket.emit('retry');
 				test = true;
@@ -59,6 +63,12 @@ io.on('connection', socket => {
 	setInterval(() => {
 		mapS.sortPlayer();
 		mapS.randomFood(100);
+		if (
+			mapS.getPlayer(socket.id) != null &&
+			mapS.getPlayer(socket.id).vector != null
+		) {
+			move(mapS.getPlayer(socket.id).vector, mapS.getPlayer(socket.id), mapS);
+		}
 		feed(mapS);
 		io.emit('map', mapS);
 	}, 25);
