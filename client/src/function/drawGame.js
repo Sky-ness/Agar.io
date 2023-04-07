@@ -66,10 +66,6 @@ function drawCircle(circle, color, pseudo) {
 	context.fill();
 	context.fillStyle = 'white';
 	if (pseudo != null) {
-		context.textAlign = 'center';
-		context.textBaseline = 'middle';
-		context.font = circle.score / 3 + 'px comic sans ms';
-		context.fillText(pseudo, circle.x, circle.y);
 		context.drawImage(
 			dragon,
 			circle.x - circle.score / 2 - 10,
@@ -77,6 +73,10 @@ function drawCircle(circle, color, pseudo) {
 			circle.score + 20,
 			circle.score + 20
 		);
+		context.textAlign = 'center';
+		context.textBaseline = 'middle';
+		context.font = circle.score / 3 + 'px comic sans ms';
+		context.fillText(pseudo, circle.x, circle.y);
 	} else {
 		context.drawImage(
 			fire,
