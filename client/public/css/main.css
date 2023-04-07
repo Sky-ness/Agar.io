@@ -22,14 +22,15 @@ canvas {
 
 .characterForm {
   color: white;
+  font-family: 'Uncial Antiqua', cursive;
   padding: 40px;
 }
 
 .character h1 {
   padding-top: 30px;
   font-size: 2em;
-  font-family: Arial, Helvetica, sans-serif;
-  color: crimson;
+  font-family: 'Uncial Antiqua', cursive;
+  color: orangered;
 }
 
 .score {

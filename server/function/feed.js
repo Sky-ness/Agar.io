@@ -19,17 +19,8 @@ export function feed(mapS) {
 		});
 	});
 }
-let counter;
-
-export function invincibility(sec, player) {
-	let timeElapsed = 0;
-	counter = setInterval(() => {
-		timeElapsed++;
-		if (timeElapsed === sec) {
-			player.isFeedable = true;
-			clearInterval(counter);
-		}
-	}, 1000);
+export function invincibility(player, sec) {
+	setTimeout(() => (player.isFeedable = true), sec * 1000);
 }
 
 export function scoreMove(player, socket) {

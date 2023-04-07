@@ -4,13 +4,16 @@ import { socket } from '../main.js';
 const canvas = document.querySelector('.gameCanvas');
 
 const context = canvas.getContext('2d'),
-	canvasResizeObserver = new ResizeObserver(() => resampleCanvas());
+	canvasResizeObserver = new ResizeObserver(() => resampleCanvas()),
+	dragon = new Image(),
+	fire = new Image();
 
 let mouse;
 let zoom = 2;
 let originX = 0;
 let originY = 0;
-let ancienScore = 20;
+dragon.src = '/images/logo.png';
+fire.src = '/images/fire.png';
 
 canvasResizeObserver.observe(canvas);
 canvas.addEventListener('mousemove', event => {
@@ -21,6 +24,7 @@ canvas.addEventListener('mousemove', event => {
 export function drawGame(mapC, scoreBoard, id) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	context.save();
+
 	context.scale(zoom, zoom);
 	//--------------------------bordel-------------------------------------------
 
@@ -44,7 +48,10 @@ export function drawGame(mapC, scoreBoard, id) {
 }
 
 export function updateZoom(scoreDIff) {
-	zoom -= 0.01 * scoreDIff;
+	if (zoom > 0.8) {
+		zoom -= 0.01 * scoreDIff;
+		console.log(zoom);
+	}
 }
 
 export function resetZoom() {
@@ -63,6 +70,21 @@ function drawCircle(circle, color, pseudo) {
 		context.textBaseline = 'middle';
 		context.font = circle.score / 3 + 'px comic sans ms';
 		context.fillText(pseudo, circle.x, circle.y);
+		context.drawImage(
+			dragon,
+			circle.x - circle.score / 2 - 10,
+			circle.y - circle.score / 2 - 11,
+			circle.score + 20,
+			circle.score + 20
+		);
+	} else {
+		context.drawImage(
+			fire,
+			circle.x - circle.score / 2,
+			circle.y - circle.score / 2,
+			circle.score,
+			circle.score
+		);
 	}
 }
 

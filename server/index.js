@@ -28,8 +28,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(500, 500);
-let ancienScore = 20;
+let mapS = new Maps(3000, 3000);
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -49,7 +48,7 @@ io.on('connection', socket => {
 				20
 			)
 		);
-		invincibility(3, mapS.getPlayer(socket.id));
+		invincibility(mapS.getPlayer(socket.id), 3);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
 				mapS.getPlayer(socket.id).vector = new Vector(
@@ -64,7 +63,7 @@ io.on('connection', socket => {
 	});
 	setInterval(() => {
 		mapS.sortPlayer();
-		mapS.randomFood(100);
+		mapS.randomFood(1000);
 		if (
 			mapS.getPlayer(socket.id) != null &&
 			mapS.getPlayer(socket.id).vector != null
