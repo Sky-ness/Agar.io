@@ -31,3 +31,10 @@ export function invincibility(sec, player) {
 		}
 	}, 1000);
 }
+
+export function scoreMove(player, socket) {
+	if (player.score !== player.ancienScore) {
+		socket.emit('scoreMove', player);
+		player.ancienScore = player.score;
+	}
+}

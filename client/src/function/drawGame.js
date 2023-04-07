@@ -21,14 +21,11 @@ canvas.addEventListener('mousemove', event => {
 export function drawGame(mapC, scoreBoard, id) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	context.save();
-	mainZoom();
+	context.scale(zoom, zoom);
 	//--------------------------bordel-------------------------------------------
+
 	if (mapC.players.find(el => el.id === id)) {
 		translate(mapC.players.find(el => el.id === id));
-		if (mapC.players.find(el => el.id === id).score != ancienScore) {
-			updateZoom(mapC.players.find(el => el.id === id).score - ancienScore);
-			ancienScore = mapC.players.find(el => el.id === id).score;
-		}
 	}
 	//---------------------------------------------------------------------------
 	grid(70, mapC);
@@ -46,9 +43,6 @@ export function drawGame(mapC, scoreBoard, id) {
 	context.restore();
 }
 
-function mainZoom() {
-	context.scale(zoom, zoom);
-}
 export function updateZoom(scoreDIff) {
 	zoom -= 0.01 * scoreDIff;
 }

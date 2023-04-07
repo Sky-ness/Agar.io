@@ -6,8 +6,9 @@ import CreditsView from './view/CreditsView.js';
 import { io } from 'socket.io-client';
 //import { resolveModuleName } from 'typescript';
 import { Maps } from '../../server/class/Maps.js';
-import { drawGame, setMousePosition } from './function/drawGame.js';
+import { drawGame } from './function/drawGame.js';
 import { resetZoom } from './function/drawGame.js';
+import { updateZoom } from './function/drawGame.js';
 
 //                   initialisation du serveur coté client
 export const socket = io();
@@ -51,5 +52,8 @@ function initSocketEvent() {
 		replayView.show();
 		creditsView.show();
 		resetZoom();
+	});
+	socket.on('scoreMove', player => {
+		updateZoom(player.score - player.ancienScore);
 	});
 }

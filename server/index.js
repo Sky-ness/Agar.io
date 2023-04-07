@@ -10,7 +10,7 @@ import Vector from './class/Vector.js';
 
 import { generateRandomNumber } from './function/random.js';
 import { move } from './function/move.js';
-import { feed, invincibility } from './function/feed.js';
+import { feed, invincibility, scoreMove } from './function/feed.js';
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -29,6 +29,7 @@ httpServer.listen(env.PORT, () => {
 });
 
 let mapS = new Maps(500, 500);
+let ancienScore = 20;
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -68,7 +69,10 @@ io.on('connection', socket => {
 			mapS.getPlayer(socket.id) != null &&
 			mapS.getPlayer(socket.id).vector != null
 		) {
-			move(mapS.getPlayer(socket.id).vector, mapS.getPlayer(socket.id), mapS);
+			move(mapS.getPlayer(socket.id), mapS);
+		}
+		if (mapS.getPlayer(socket.id) != null) {
+			scoreMove(mapS.getPlayer(socket.id), socket);
 		}
 		feed(mapS);
 		io.emit('map', mapS);

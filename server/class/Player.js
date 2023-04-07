@@ -7,6 +7,6 @@ export class Player extends Blob {
 		this.pseudo = pseudo;
 		this.vector = null;
 		this.isFeedable = false;
-		this.lose = true;
+		this.ancienScore = score;
 	}
 }
