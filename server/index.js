@@ -28,7 +28,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(3000, 3000);
+let mapS = new Maps(500, 500);
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -63,7 +63,7 @@ io.on('connection', socket => {
 	});
 	setInterval(() => {
 		mapS.sortPlayer();
-		mapS.randomFood(1000);
+		mapS.randomFood(100);
 		if (
 			mapS.getPlayer(socket.id) != null &&
 			mapS.getPlayer(socket.id).vector != null

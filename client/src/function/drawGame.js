@@ -6,15 +6,16 @@ const canvas = document.querySelector('.gameCanvas');
 const context = canvas.getContext('2d'),
 	canvasResizeObserver = new ResizeObserver(() => resampleCanvas()),
 	dragon = new Image(),
-	fire = new Image();
-
+	fire = new Image(),
+	cgt = new Image();
 let mouse;
-let zoom = 2;
+let zoom = 3;
 let originX = 0;
 let originY = 0;
+
 dragon.src = '/images/logo.png';
 fire.src = '/images/fire.png';
-
+cgt.src = '/images/cgt.png';
 canvasResizeObserver.observe(canvas);
 canvas.addEventListener('mousemove', event => {
 	setMousePosition(event);
@@ -55,7 +56,7 @@ export function updateZoom(scoreDIff) {
 }
 
 export function resetZoom() {
-	zoom = 2;
+	zoom = 3;
 }
 
 function drawCircle(circle, color, pseudo) {
@@ -65,18 +66,26 @@ function drawCircle(circle, color, pseudo) {
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
 	context.fill();
 	context.fillStyle = 'white';
-	if (pseudo != null) {
+	if (pseudo != null && pseudo != 'fritsch') {
 		context.drawImage(
 			dragon,
-			circle.x - circle.score / 2 - 10,
-			circle.y - circle.score / 2 - 11,
-			circle.score + 20,
-			circle.score + 20
+			circle.x - circle.score / 2,
+			circle.y - circle.score / 2,
+			circle.score,
+			circle.score
 		);
 		context.textAlign = 'center';
 		context.textBaseline = 'middle';
 		context.font = circle.score / 3 + 'px comic sans ms';
 		context.fillText(pseudo, circle.x, circle.y);
+	} else if (pseudo === 'fritsch') {
+		context.drawImage(
+			cgt,
+			circle.x - circle.score / 2,
+			circle.y - circle.score / 2,
+			circle.score,
+			circle.score
+		);
 	} else {
 		context.drawImage(
 			fire,
