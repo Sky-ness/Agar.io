@@ -1,7 +1,7 @@
 import http from 'http';
 import express from 'express';
 import { env } from 'node:process';
-import { Server as IOServer } from 'socket.io';
+import { Server } from 'socket.io';
 import addWebpackMiddleware from './utils/addWebpackMiddleware.js';
 
 import { Maps } from './class/Maps.js';
@@ -11,19 +11,34 @@ import Vector from './class/Vector.js';
 import { generateRandomNumber } from './function/random.js';
 import { move } from './function/move.js';
 import { feed, invincibility, scoreMove } from './function/feed.js';
-
 const app = express();
 const httpServer = http.createServer(app);
-const io = new IOServer(httpServer);
+
+interface ServerToClientsEvents {
+	map: (map : Maps) => void;
+	retry: () => void;
+}
+interface ClientToServerEvents{
+	disconnect: () => void;
+	play: (tag: {pseudo: String; color: String}) => void;
+	mousePosition: (mouse: {x: Number;y: Number}) => void;
+
+}
+
+
+const io = new Server<ClientToServerEvents,ServerToClientsEvents>(httpServer);
 addWebpackMiddleware(app);
 
 // 					page principal du jeu
 app.get('/', app.use(express.static('client/public')));
 
 //			Définition du port utilisé pour notre serveur
+
 if (env.PORT == undefined) {
-	env.PORT = 8000;
+	env.PORT = '8000';
 }
+
+
 httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });

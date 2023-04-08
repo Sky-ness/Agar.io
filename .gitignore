@@ -1,4 +1,15 @@
+# iOS de ...
 .DS_Store
+
+# npm
 node_modules
+
+# ?
 *.zip
+
+# les fichiérs générés
 build
+
+# webstorm
+.idea
+*.iml

@@ -21,6 +21,7 @@ export default {
 					// ... seront compilés par babel !
 					loader: 'babel-loader',
 				},
+				type: 'javascript/esm', // permet l'utilisation des modules ES6
 			},
 		],
 	},

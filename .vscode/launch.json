@@ -9,8 +9,10 @@
 			"type": "node",
 			"request": "launch",
 			"cwd": "${workspaceFolder}",
-			"runtimeExecutable": "npm",
-			"runtimeArgs": ["run-script", "dev"],
+			"program": "./server/src/index.ts",
+			"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+			"args": ["--ignore","./client"],
+			"restart": true,
 			"skipFiles": [
 				"<node_internals>/**"
 			],
