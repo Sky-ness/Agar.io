@@ -1,9 +1,11 @@
-import { Maps } from '../../../server/class/Maps.js';
+// @ts-ignore
+import { Maps } from '../../../server/class/Maps.ts';
 // @ts-ignore
 import { randomColor } from '../../../server/function/random.ts';
 // @ts-ignore
 import { socket } from '../main.ts';
-import {Player} from '../../../server/class/Player.js'
+// @ts-ignore
+import {Player} from '../../../server/class/Player.ts'
 
 
 const canvas = document.querySelector('.gameCanvas') as HTMLCanvasElement;
@@ -56,7 +58,6 @@ export function drawGame(mapC: Maps, scoreBoard: HTMLOListElement, id: string) {
 export function updateZoom(scoreDIff: number) {
 	if (zoom > 0.8) {
 		zoom -= 0.01 * scoreDIff;
-		
 	}
 }
 
@@ -71,7 +72,8 @@ function drawCircle(circle: any, color: string, pseudo: string) {
 	context.arc(circle.x, circle.y, circle.score, 0, 360, false);
 	context.fill();
 	context.fillStyle = 'white';
-	if (pseudo != null && pseudo != 'fritsch') {
+	if (pseudo != null && pseudo != 'fritsch' && circle.isFeedable != null ) {
+		
 		context.drawImage(
 			dragon,
 			circle.x - circle.score / 2,
