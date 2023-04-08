@@ -1,14 +1,19 @@
-import { randomColor } from '../../../server/function/random.js';
-import { socket } from '../main.js';
+import { Maps } from '../../../server/class/Maps.js';
+// @ts-ignore
+import { randomColor } from '../../../server/function/random.ts';
+// @ts-ignore
+import { socket } from '../main.ts';
+import {Player} from '../../../server/class/Player.js'
 
-const canvas = document.querySelector('.gameCanvas');
 
-const context = canvas.getContext('2d'),
+const canvas = document.querySelector('.gameCanvas') as HTMLCanvasElement;
+
+const context = canvas.getContext('2d') as CanvasRenderingContext2D,
 	canvasResizeObserver = new ResizeObserver(() => resampleCanvas()),
 	dragon = new Image(),
 	fire = new Image(),
 	cgt = new Image();
-let mouse;
+let mouse: {x: number,y:number};
 let zoom = 3;
 let originX = 0;
 let originY = 0;
@@ -22,7 +27,7 @@ canvas.addEventListener('mousemove', event => {
 	socket.emit('mousePosition', mouse);
 });
 
-export function drawGame(mapC, scoreBoard, id) {
+export function drawGame(mapC: Maps, scoreBoard: HTMLOListElement, id: string) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	context.save();
 
@@ -30,12 +35,12 @@ export function drawGame(mapC, scoreBoard, id) {
 	//--------------------------bordel-------------------------------------------
 
 	if (mapC.players.find(el => el.id === id)) {
-		translate(mapC.players.find(el => el.id === id));
+		translate(mapC.players.find(el => el.id === id)!);
 	}
 	//---------------------------------------------------------------------------
 	grid(70, mapC);
 	mapC.foods.forEach(element => {
-		drawCircle(element, element.color, null);
+		drawCircle(element, element.color, '');
 	});
 	mapC.players.forEach(element => {
 		if (!element.isFeedable) {
@@ -48,10 +53,10 @@ export function drawGame(mapC, scoreBoard, id) {
 	context.restore();
 }
 
-export function updateZoom(scoreDIff) {
+export function updateZoom(scoreDIff: number) {
 	if (zoom > 0.8) {
 		zoom -= 0.01 * scoreDIff;
-		console.log(zoom);
+		
 	}
 }
 
@@ -59,7 +64,7 @@ export function resetZoom() {
 	zoom = 3;
 }
 
-function drawCircle(circle, color, pseudo) {
+function drawCircle(circle: any, color: string, pseudo: string) {
 	context.beginPath();
 	context.fillStyle = '' + color;
 	context.lineWidth = 4;
@@ -97,7 +102,7 @@ function drawCircle(circle, color, pseudo) {
 	}
 }
 
-function grid(size, mapC) {
+function grid(size: number, mapC: Maps) {
 	context.lineWidth = 2;
 	for (var x = 0; x <= mapC.width; x += size) {
 		context.moveTo(x, 0);
@@ -111,7 +116,7 @@ function grid(size, mapC) {
 	context.stroke();
 }
 
-function showScoreBoard(mapC, scoreBoard) {
+function showScoreBoard(mapC: Maps, scoreBoard: HTMLOListElement) {
 	scoreBoard.innerHTML = '';
 	for (let i = mapC.players.length - 1; i >= 0; i--) {
 		scoreBoard.innerHTML += `<li>${mapC.players[i].pseudo} : ${mapC.players[i].score}</li>`;
@@ -123,13 +128,13 @@ function resampleCanvas() {
 	canvas.height = canvas.clientHeight;
 }
 
-function translate(player) {
+function translate(player: Player) {
 	originX = canvas.width / 2 / zoom - player.x;
 	originY = canvas.height / 2 / zoom - player.y;
 	context.translate(originX, originY);
 }
 
-function setMousePosition(event) {
+function setMousePosition(event: MouseEvent) {
 	const rect = canvas.getBoundingClientRect();
 	mouse = {
 		x: event.clientX / zoom - rect.left - originX,

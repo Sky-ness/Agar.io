@@ -1,5 +1,7 @@
 export default class View {
-	constructor(element) {
+	element: HTMLDivElement;
+
+	constructor(element: HTMLDivElement) {
 		this.element = element;
 		this.hide();
 	}

@@ -1,4 +1,8 @@
-export function feed(mapS) {
+import { Socket } from "socket.io";
+import { Maps } from "../class/Maps";
+import { Player } from "../class/Player";
+
+export function feed(mapS: Maps) {
 	mapS.players.forEach(element => {
 		mapS.players.forEach(el => {
 			if (element != el) {
@@ -19,11 +23,10 @@ export function feed(mapS) {
 		});
 	});
 }
-export function invincibility(player, sec) {
+export function invincibility(player: Player, sec: number) {
 	setTimeout(() => (player.isFeedable = true), sec * 1000);
 }
-
-export function scoreMove(player, socket) {
+export function scoreMove(player: Player, socket: Socket) {
 	if (player.score !== player.ancienScore) {
 		socket.emit('scoreMove', player);
 		player.ancienScore = player.score;

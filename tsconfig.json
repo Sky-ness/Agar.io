@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"rootDirs": ["server/src", "."],
+		"rootDirs": ["server", "client/src"],
 		"outDir": "server/build",
 		"target": "ES6",
 		"module": "CommonJS",

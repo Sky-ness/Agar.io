@@ -9,7 +9,7 @@
 			"type": "node",
 			"request": "launch",
 			"cwd": "${workspaceFolder}",
-			"program": "./server/src/index.ts",
+			"program": "./server/index.ts",
 			"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
 			"args": ["--ignore","./client"],
 			"restart": true,

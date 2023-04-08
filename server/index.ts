@@ -2,15 +2,15 @@ import http from 'http';
 import express from 'express';
 import { env } from 'node:process';
 import { Server } from 'socket.io';
-import addWebpackMiddleware from './utils/addWebpackMiddleware.js';
+import addWebpackMiddleware from './utils/addWebpackMiddleware';
 
-import { Maps } from './class/Maps.js';
-import { Player } from './class/Player.js';
-import Vector from './class/Vector.js';
+import { Maps } from './class/Maps';
+import { Player } from './class/Player';
+import Vector from './class/Vector';
 
-import { generateRandomNumber } from './function/random.js';
-import { move } from './function/move.js';
-import { feed, invincibility, scoreMove } from './function/feed.js';
+import { generateRandomNumber } from './function/random';
+import { move } from './function/move';
+import { feed, invincibility, scoreMove } from './function/feed';
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -20,9 +20,8 @@ interface ServerToClientsEvents {
 }
 interface ClientToServerEvents{
 	disconnect: () => void;
-	play: (tag: {pseudo: String; color: String}) => void;
-	mousePosition: (mouse: {x: Number;y: Number}) => void;
-
+	play: (tag: {pseudo: string; color: string}) => void;
+	mousePosition: (mouse: {x: number;y: number}) => void;
 }
 
 
@@ -39,6 +38,7 @@ if (env.PORT == undefined) {
 }
 
 
+
 httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
@@ -52,7 +52,7 @@ io.on('connection', socket => {
 		mapS.removePlayer(socket.id);
 	});
 	socket.on('play', tag => {
-		let lose = false;
+		
 		mapS.addPlayer(
 			new Player(
 				socket.id,
@@ -63,16 +63,18 @@ io.on('connection', socket => {
 				20
 			)
 		);
-		invincibility(mapS.getPlayer(socket.id), 3);
+		let player: Player = mapS.getPlayer(socket.id);
+		invincibility(player, 3);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
-				mapS.getPlayer(socket.id).vector = new Vector(
-					mapS.getPlayer(socket.id),
+
+				player.vector = new Vector(
+					player,
 					mouse
 				);
-			} else if (lose === false) {
+			} else if (player.lose === true) {
+				
 				socket.emit('retry');
-				lose = true;
 			}
 		});
 	});

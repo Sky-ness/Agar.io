@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"rootDirs": ["client/src","server"],
+		"outDir": "client/public/build/",
+		"target": "ES5",
+		"module": "ES2022",
+		"sourceMap": false,
+		"noEmitOnError": false,
+	},
+	"exclude": ["./node_modules", "./server", "./client/public/build", "webpack.config.js", "jest.config.cjs"],
+}

@@ -1,6 +1,9 @@
+import { Maps } from "../class/Maps";
+import { Player } from "../class/Player";
+
 const speed = 10;
 
-export function move(player, mapS) {
+export function move(player: Player, mapS: Maps) {
 	let moveX = (player.vector.normalizeX() / (player.score / 10)) * speed;
 	let moveY = (player.vector.normalizeY() / (player.score / 10)) * speed;
 
