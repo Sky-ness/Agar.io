@@ -13,7 +13,7 @@ import { io, Socket } from "socket.io-client";
 
 interface ServerToClientsEvents {
 	map: (map : Maps) => void;
-	retry: () => void;
+	retry: (score: number) => void;
 	scoreMove: (player: { score: number; ancienScore: number; }) => void;
 }
 interface ClientToServerEvents{
@@ -24,6 +24,8 @@ interface ClientToServerEvents{
 }
 export const socket: Socket<ServerToClientsEvents,ClientToServerEvents> = io();
 
+let timer:number;
+let interId: NodeJS.Timer;
 const characterView = new CharacterView(document.querySelector('.character') as HTMLDivElement),
 	scoreView = new ScoreView(document.querySelector('.score') as HTMLDivElement),
 	replayView = new ReplayView(document.querySelector('.replay') as HTMLDivElement),
@@ -34,12 +36,18 @@ characterViewButton.addEventListener('click', event => {
 	event.preventDefault();
 	characterView.hide();
 	console.log('click');
+	timer=0;
+	interId = setInterval(timerInc,1000);
 	socket.emit('play', {
 		pseudo: characterView.pseudo,
 		color: characterView.color,
 	});
 	scoreView.show();
 });
+
+function timerInc(){
+	timer++;
+}
 
 replayViewButton.addEventListener('click', event => {
 	event.preventDefault();
@@ -62,8 +70,10 @@ function render() {
 
 function initSocketEvent() {
 	socket.on('map', mapS => (mapC = mapS));
-	socket.on('retry', () => {
+	socket.on('retry', (score) => {
 		replayView.show();
+		window.clearInterval(interId);
+		replayView.score.innerHTML = `Votre score : ${score} <br> Votre temps de survie : ${timer} secondes`;
 		creditsView.show();
 		resetZoom();
 	});

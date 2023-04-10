@@ -16,7 +16,7 @@ const httpServer = http.createServer(app);
 
 interface ServerToClientsEvents {
 	map: (map : Maps) => void;
-	retry: () => void;
+	retry: (score: number) => void;
 }
 interface ClientToServerEvents{
 	disconnect: () => void;
@@ -52,6 +52,7 @@ io.on('connection', socket => {
 		mapS.removePlayer(socket.id);
 	});
 	socket.on('play', tag => {
+		
 		mapS.addPlayer(
 			new Player(
 				socket.id,
@@ -71,7 +72,7 @@ io.on('connection', socket => {
 					mouse
 				);
 			} else if (player.lose === true) {
-				socket.emit('retry');
+				socket.emit('retry', player.score);
 			}
 		});
 	});
