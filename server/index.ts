@@ -52,7 +52,6 @@ io.on('connection', socket => {
 		mapS.removePlayer(socket.id);
 	});
 	socket.on('play', tag => {
-		
 		mapS.addPlayer(
 			new Player(
 				socket.id,
@@ -67,13 +66,11 @@ io.on('connection', socket => {
 		invincibility( mapS.getPlayer(socket.id), 3);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
-
 				player.vector = new Vector(
 					player,
 					mouse
 				);
 			} else if (player.lose === true) {
-				
 				socket.emit('retry');
 			}
 		});
