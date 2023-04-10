@@ -1,9 +1,5 @@
 // @ts-ignore
 import { Blob } from './Blob.ts';
-// @ts-ignore
-import Vector from './Vector.ts';
-
-
 
 export class Player extends Blob {
 
