@@ -1,22 +1,12 @@
-// @ts-ignore
-import CharacterView from './view/CharacterView.ts';
-// @ts-ignore
-import ScoreView from './view/ScoreView.ts';
-// @ts-ignore
-import ReplayView from './view/ReplayView.ts';
-// @ts-ignore
-import CreditsView from './view/CreditsView.ts';
 
-
-//import { resolveModuleName } from 'typescript';
-// @ts-ignore
-import { Maps } from '../../server/class/Maps.ts';
-// @ts-ignore
-import { drawGame } from './function/drawGame.ts';
-// @ts-ignore
-import { resetZoom } from './function/drawGame.ts';
-// @ts-ignore
-import { updateZoom } from './function/drawGame.ts';
+import CharacterView from './view/CharacterView';
+import ScoreView from './view/ScoreView';
+import ReplayView from './view/ReplayView';
+import CreditsView from './view/CreditsView';
+import { Maps } from '../../server/class/Maps';
+import { drawGame } from './function/drawGame';
+import { resetZoom } from './function/drawGame';
+import { updateZoom } from './function/drawGame';
 import { io, Socket } from "socket.io-client";
 
 //                   initialisation du serveur coté client

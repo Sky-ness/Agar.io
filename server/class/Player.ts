@@ -1,5 +1,4 @@
-// @ts-ignore
-import { Blob } from './Blob.ts';
+import { Blob } from './Blob';
 
 export class Player extends Blob {
 

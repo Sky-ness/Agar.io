@@ -1,5 +1,5 @@
-// @ts-ignore
-import View from './View.ts';
+
+import View from './View';
 export default class CharacterView extends View {
 
 	button: HTMLButtonElement;

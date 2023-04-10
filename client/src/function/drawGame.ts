@@ -1,11 +1,7 @@
-// @ts-ignore
-import { Maps } from '../../../server/class/Maps.ts';
-// @ts-ignore
-import { randomColor } from '../../../server/function/random.ts';
-// @ts-ignore
-import { socket } from '../main.ts';
-// @ts-ignore
-import {Player} from '../../../server/class/Player.ts'
+import { Maps } from '../../../server/class/Maps';
+import { randomColor } from '../../../server/function/random';
+import { socket } from '../main';
+import {Player} from '../../../server/class/Player'
 
 
 const canvas = document.querySelector('.gameCanvas') as HTMLCanvasElement;

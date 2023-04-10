@@ -28,6 +28,10 @@ export default {
 			},
 		],
 	},
+	resolve: {
+		// Ajoute le support de l'extension `.ts`
+		extensions: ['.ts', '.js'],
+	},
 	devtool: 'source-map',
 	devServer: {
 		hot: false, // désactivation hot-reload (inutilisé)

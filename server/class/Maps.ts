@@ -1,9 +1,6 @@
-// @ts-ignore
-import { generateRandomNumber, randomColor } from '../function/random.ts';
-// @ts-ignore
-import { Blob } from './Blob.ts';
-// @ts-ignore
-import { Player } from './Player.js';
+import { generateRandomNumber, randomColor } from '../function/random';
+import { Blob } from './Blob';
+import { Player } from './Player';
 
 export class Maps {
 	players: Player[] = [];

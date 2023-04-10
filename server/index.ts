@@ -43,7 +43,7 @@ httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
 
-let mapS = new Maps(500, 500);
+let mapS = new Maps(1500, 1500);
 
 io.on('connection', socket => {
 	console.log(`Nouvelle connexion du client ${socket.id}`);
@@ -64,7 +64,7 @@ io.on('connection', socket => {
 			)
 		);
 		let player: Player = mapS.getPlayer(socket.id);
-		invincibility(player, 3);
+		invincibility( mapS.getPlayer(socket.id), 3);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
 
