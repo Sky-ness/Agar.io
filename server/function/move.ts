@@ -1,14 +1,12 @@
 import { Maps } from "../class/Maps";
 import { Player } from "../class/Player";
 
-const speed = 10;
-
 export function move(player: Player, mapS: Maps) {
-	let moveX = (player.vector.normalizeX() / (player.score / 10)) * speed;
-	let moveY = (player.vector.normalizeY() / (player.score / 10)) * speed;
+	let moveX = (player.vector.deplacementX() / (player.score / 10));
+	let moveY = (player.vector.deplacementY() / (player.score / 10) );
 
-	// if (vector.normalizeX() <= 0.1 && vector.normalizeX() >= -0.1) moveX = 0;
-	// if (vector.normalizeY() <= 0.1 && vector.normalizeY() >= -0.1) moveY = 0;
+	console.log(player.vector.deplacementX());
+	console.log(player.vector.deplacementY());
 
 	if (!mapS.outOfBoundsX(player)) player.x += moveX;
 	else if (player.x <= 0 && moveX >= 0) player.x += moveX;

@@ -1,53 +1,33 @@
-import { Player } from "./Player";
-
-
+const MAX_MAGNITUDE = 5;
 
 export default class Vector {
 
-	x1:number;
-	x2:number;
-	y1:number;
-	y2:number;
-	max:number;
-	min:number;
-
+	distanceX:number;
+	distanceY:number;
+	direction:number;
+	magnitude:number;
 
 
 	constructor(player: any, mouse: {x:any,y:any}) {
 		if(player == 'null' && mouse.x == 'null' && mouse.y == 'null'){
-			this.x1 = 0;
-			this.x2 = 0;
-			this.y1 = 0;
-			this.y2 = 0;
-			this.max = 100;
-			this.min = 5;
+			this.distanceX = 0;
+			this.distanceY = 0;
+			this.direction = 0;
+			this.magnitude = 0;
 		}
-		this.x1 = player.x;
-		this.x2 = mouse.x;
-		this.y1 = player.y;
-		this.y2 = mouse.y;
-		this.max = 100;
-		this.min = 5;
+		this.distanceX = mouse.x - player.x
+		this.distanceY =mouse.y - player.y ;
+		this.direction = Math.atan2(mouse.y - player.y , mouse.x - player.x);
+		this.magnitude = Math.sqrt(Math.pow(this.distanceX,2) + Math.pow(this.distanceY,2));
+		if (this.magnitude > MAX_MAGNITUDE) {
+			this.magnitude=MAX_MAGNITUDE;
+		}
 	}
-	length() {
-		return Math.sqrt(
-			Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2)
-		);
+	deplacementX(){
+		return this.magnitude * Math.cos(this.direction);
 	}
-
-	distanceX() {
-		return this.x2 - this.x1;
+	deplacementY(){
+		return this.magnitude * Math.sin(this.direction);
 	}
 
-	distanceY() {
-		return this.y2 - this.y1;
-	}
-
-	normalizeX() {
-		return this.distanceX() / this.length();
-	}
-
-	normalizeY() {
-		return this.distanceY() / this.length();
-	}
 }
