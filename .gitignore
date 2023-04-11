@@ -6,6 +6,7 @@ node_modules
 
 # ?
 *.zip
+coverage
 
 # les fichiérs générés
 build
@@ -13,3 +14,4 @@ build
 # webstorm
 .idea
 *.iml
+

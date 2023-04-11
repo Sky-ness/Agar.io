@@ -10,6 +10,7 @@ export function feed(mapS: Maps) {
 					element.score += el.score / 2;
 					el.lose = true;
 					mapS.removePlayer(el.id);
+					return true;
 				}
 			}
 		});
@@ -19,9 +20,11 @@ export function feed(mapS: Maps) {
 			if (mapS.feed(el, element)) {
 				el.score += 1;
 				mapS.removeFood(element);
+				return true;
 			}
 		});
 	});
+	return false;
 }
 export function invincibility(player: Player, sec: number) {
 	setTimeout(() => (player.isFeedable = true), sec * 1000);

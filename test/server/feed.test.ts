@@ -8,24 +8,27 @@ import { feed } from "../../server/function/feed";
 import { invincibility } from '../../server/function/feed';
 import { scoreMove } from '../../server/function/feed';
 
-let m = new Maps(500,500);
-let p1 = new Player('1',"heisenberg","red",30,30,30);
-let p2 = new Player('2',"skyler","blue",30,30,20);
+let m: Maps;
+let p1: Player;
+let p2: Player;
 
 beforeEach(() => {
+    jest.useFakeTimers();
     m = new Maps(500,500);
-    p1 = new Player('1',"heisenberg","red",30,30,20);
+    p1 = new Player('1',"heisenberg","red",30,30,70);
     p2 = new Player('2',"skyler","blue",30,30,20);
     m.addPlayer(p1);
     m.addPlayer(p2);
+    jest.runAllTimers();
 });
 
 
+
 // describe('eat player', () => {
-//     test('player 1 was ate by player 2', () => {
-//         expect(          ).toBe(          );
-//         expect(          ).toBe(          );
-//     });
+//     it('player 1 was ate by player 2', () => {
+//         expect(true).toBe(true);
+// });
+// });
 
 //     test('player 2 was ate by player 1', () => {
 //         expect(           ).toBe(          );
