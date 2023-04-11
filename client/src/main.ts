@@ -8,7 +8,7 @@ import { drawGame } from './function/drawGame';
 import { resetZoom } from './function/drawGame';
 import { updateZoom } from './function/drawGame';
 import { io, Socket } from "socket.io-client";
-import { Player } from '../../server/class/Player';
+
 
 //                   initialisation du serveur coté client
 
@@ -37,7 +37,6 @@ const nav = document.querySelector('.nav') as HTMLDivElement;
 characterViewButton.addEventListener('click', event => {
 	event.preventDefault();
 	characterView.hide();
-	console.log('click');
 	timer=0;
 	interId = setInterval(timerInc,1000);
 	socket.emit('play', {
@@ -69,7 +68,6 @@ initSocketEvent();
 requestAnimationFrame(render);
 
 function render() {
-	
 	drawGame(mapC, scoreView.scoreBoard, socket.id);
 	requestAnimationFrame(render);
 }
