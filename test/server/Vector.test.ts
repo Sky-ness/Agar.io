@@ -2,10 +2,12 @@ import { expect } from '@jest/globals';
 import Vector from "../../server/class/Vector";
 import { Player } from '../../server/class/Player';
 
+
 let p1: Player;
 let p2: Player;
 let v: Vector;
 let v2: Vector;
+
 
 beforeEach(() => {
     p1 = new Player('1',"heisenberg","red",30,30,30);
@@ -37,3 +39,4 @@ describe('compute for create vector', () => {
         expect(v2.magnitude).toBeLessThan(5);
     });
 });
+

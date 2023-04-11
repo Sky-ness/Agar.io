@@ -26,9 +26,7 @@ export function feed(mapS: Maps) {
 	});
 	return false;
 }
-export function invincibility(player: Player, sec: number) {
-	setTimeout(() => (player.isFeedable = true), sec * 1000);
-}
+
 export function scoreMove(player: Player, socket: Socket) {
 	if (player.score !== player.ancienScore) {
 		socket.emit('scoreMove', player);

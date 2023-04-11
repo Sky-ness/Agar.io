@@ -20,6 +20,7 @@ beforeEach(() => {
     m.addPlayer(p3);
 });
 
+
 describe('move player in a different direction', () => {
     test('move player 1 on the right', () => {
         m.players[0].vector = new Vector(p1,{x: 35,y: 30});

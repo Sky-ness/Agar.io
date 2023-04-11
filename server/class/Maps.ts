@@ -13,6 +13,8 @@ export class Maps {
 	}
 	addPlayer(player: Player) {
 		this.players.push(player);
+		//invincibilité
+		setTimeout(() => (player.isFeedable = true), 3000);
 	}
 	getPlayer(id: string) { 
 		return this.players.find(player => player.id == id)!;

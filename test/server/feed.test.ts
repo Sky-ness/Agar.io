@@ -1,12 +1,11 @@
-
 import { expect } from '@jest/globals';
 
 import { Maps } from '../../server/class/Maps';
 import { Player } from '../../server/class/Player';
 
 import { feed } from "../../server/function/feed";
-import { invincibility } from '../../server/function/feed';
 import { scoreMove } from '../../server/function/feed';
+
 
 let m: Maps;
 let p1: Player;
@@ -21,7 +20,6 @@ beforeEach(() => {
     m.addPlayer(p2);
     jest.runAllTimers();
 });
-
 
 
 // describe('eat player', () => {
