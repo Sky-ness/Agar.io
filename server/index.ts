@@ -1,3 +1,4 @@
+
 import http from 'http';
 import express from 'express';
 import { env } from 'node:process';
@@ -10,7 +11,7 @@ import Vector from './class/Vector';
 
 import { generateRandomNumber } from './function/random';
 import { move } from './function/move';
-import { feed, invincibility, scoreMove } from './function/feed';
+import { feed, scoreMove } from './function/feed';
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -37,8 +38,6 @@ if (env.PORT == undefined) {
 	env.PORT = '8000';
 }
 
-
-
 httpServer.listen(env.PORT, () => {
 	console.log(`Server running at http://localhost:${env.PORT}/`);
 });
@@ -63,7 +62,6 @@ io.on('connection', socket => {
 			)
 		);
 		let player: Player = mapS.getPlayer(socket.id);
-		invincibility( mapS.getPlayer(socket.id), 3);
 		socket.on('mousePosition', mouse => {
 			if (mapS.getPlayer(socket.id) != null) {
 				player.vector = new Vector(
