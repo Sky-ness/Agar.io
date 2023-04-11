@@ -35,7 +35,6 @@ const characterViewButton = characterView.button as HTMLButtonElement,
 characterViewButton.addEventListener('click', event => {
 	event.preventDefault();
 	characterView.hide();
-	console.log('click');
 	timer=0;
 	interId = setInterval(timerInc,1000);
 	socket.emit('play', {
@@ -63,7 +62,6 @@ initSocketEvent();
 requestAnimationFrame(render);
 
 function render() {
-	
 	drawGame(mapC, scoreView.scoreBoard, socket.id);
 	requestAnimationFrame(render);
 }
