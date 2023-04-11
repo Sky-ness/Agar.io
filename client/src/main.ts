@@ -8,6 +8,7 @@ import { drawGame } from './function/drawGame';
 import { resetZoom } from './function/drawGame';
 import { updateZoom } from './function/drawGame';
 import { io, Socket } from "socket.io-client";
+import { Player } from '../../server/class/Player';
 
 //                   initialisation du serveur coté client
 
@@ -31,7 +32,8 @@ const characterView = new CharacterView(document.querySelector('.character') as 
 	replayView = new ReplayView(document.querySelector('.replay') as HTMLDivElement),
 	creditsView = new CreditsView(document.querySelector('.credits') as HTMLDivElement);
 const characterViewButton = characterView.button as HTMLButtonElement,
-	replayViewButton = replayView.button as HTMLButtonElement;
+replayViewButton = replayView.button as HTMLButtonElement;
+const nav = document.querySelector('.nav') as HTMLDivElement;
 characterViewButton.addEventListener('click', event => {
 	event.preventDefault();
 	characterView.hide();
@@ -42,6 +44,8 @@ characterViewButton.addEventListener('click', event => {
 		pseudo: characterView.pseudo,
 		color: characterView.color,
 	});
+	
+	nav.style.display = 'none'
 	scoreView.show();
 });
 
@@ -54,10 +58,12 @@ replayViewButton.addEventListener('click', event => {
 	replayView.hide();
 	creditsView.hide();
 	characterView.show();
+	nav.style.display = 'block'
 });
 
 //-------------------------------------------------------------------------------
 let mapC: Maps = new Maps(500,500);
+
 
 initSocketEvent();
 requestAnimationFrame(render);
@@ -69,7 +75,9 @@ function render() {
 }
 
 function initSocketEvent() {
-	socket.on('map', mapS => (mapC = mapS));
+	socket.on('map', (mapS) =>{
+		mapC = mapS
+	});
 	socket.on('retry', (score) => {
 		replayView.show();
 		window.clearInterval(interId);
@@ -81,3 +89,34 @@ function initSocketEvent() {
 		updateZoom(player.score - player.ancienScore);
 	});
 }
+
+const credits = document.querySelector('.Credits') as HTMLLinkElement;
+credits.addEventListener('click', (event) => {
+	event.preventDefault();
+	characterView.hide();
+	scoreView.hide();
+	creditsView.show();
+})
+
+
+
+const score = document.querySelector('.score') as HTMLDivElement;
+const classement = document.querySelector('.Classement') as HTMLLinkElement;
+classement.addEventListener('click', (event) => {
+	event.preventDefault();
+	score.classList.add('scoreView');
+	score.classList.remove('score');
+	characterView.hide();
+	creditsView.hide();
+	scoreView.show();
+})
+
+const jeu = document.querySelector('.Jeu') as HTMLLinkElement;
+jeu.addEventListener('click', (event) => {
+	event.preventDefault();
+	characterView.show();
+	score.classList.add('score');
+	score.classList.remove('scoreView');
+	creditsView.hide();
+	scoreView.hide();
+})

@@ -5,8 +5,7 @@ export function move(player: Player, mapS: Maps) {
 	let moveX = (player.vector.deplacementX() / (player.score / 10));
 	let moveY = (player.vector.deplacementY() / (player.score / 10) );
 
-	console.log(player.vector.deplacementX());
-	console.log(player.vector.deplacementY());
+	
 
 	if (!mapS.outOfBoundsX(player)) player.x += moveX;
 	else if (player.x <= 0 && moveX >= 0) player.x += moveX;

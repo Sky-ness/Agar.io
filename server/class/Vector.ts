@@ -1,3 +1,5 @@
+import { Player } from "./Player";
+
 const MAX_MAGNITUDE = 5;
 
 export default class Vector {
@@ -8,13 +10,8 @@ export default class Vector {
 	magnitude:number;
 
 
-	constructor(player: any, mouse: {x:any,y:any}) {
-		if(player == 'null' && mouse.x == 'null' && mouse.y == 'null'){
-			this.distanceX = 0;
-			this.distanceY = 0;
-			this.direction = 0;
-			this.magnitude = 0;
-		}
+	constructor(player: Player, mouse: {x:number,y:number}) {
+		
 		this.distanceX = mouse.x - player.x
 		this.distanceY =mouse.y - player.y ;
 		this.direction = Math.atan2(mouse.y - player.y , mouse.x - player.x);

@@ -89,6 +89,7 @@ function drawCircle(circle: any, color: string, pseudo: string) {
 			circle.score,
 			circle.score
 		);
+		
 	} else {
 		context.drawImage(
 			fire,

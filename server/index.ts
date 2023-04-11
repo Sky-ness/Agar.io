@@ -52,7 +52,6 @@ io.on('connection', socket => {
 		mapS.removePlayer(socket.id);
 	});
 	socket.on('play', tag => {
-		
 		mapS.addPlayer(
 			new Player(
 				socket.id,
@@ -72,6 +71,7 @@ io.on('connection', socket => {
 					mouse
 				);
 			} else if (player.lose === true) {
+				player.lose = false;
 				socket.emit('retry', player.score);
 			}
 		});

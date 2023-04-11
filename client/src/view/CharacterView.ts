@@ -8,7 +8,7 @@ export default class CharacterView extends View {
 
 	constructor(element: HTMLDivElement) {
 		super(element);
-		this.button = this.element.querySelector('button') as HTMLButtonElement;
+		this.button = this.element.querySelector('.btnPlay') as HTMLButtonElement;
 		this.button.addEventListener('click', () => {
 		let color = this.element.querySelector('.color') as HTMLFormElement;
 		this.color = color.value;

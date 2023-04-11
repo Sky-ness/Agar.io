@@ -8,6 +8,7 @@
 	<link rel="icon" href="images/logo.png" sizes="96x96">
 	<link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
 	<!-- inclusion du fichier js compilé par babel dans le dossier build -->
@@ -38,6 +39,24 @@
 
 			</ol>
 		</article>
+
+		<article class="nav">
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+				  <a class="navbar-brand Jeu" href="#">Le jeu</a>
+				  <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item active">
+					  <a class="nav-link Classement" href="#">Classement</a>
+					</li>
+					<li class="nav-item">
+					  <a class="nav-link Credits" href="#">Crédits</a>
+					</li>
+				  </ul>
+				</div>
+			  </nav>
+		</article>
+		
 		<article class="character">
 			<h1>Dungeon And Dragons</h1>
 			<form class="characterForm">
@@ -45,8 +64,10 @@
 				<input type="text" class="pseudo" /></span>
 				<span><label for="color-picker">choose color of your etendar :</label>
 				<input type="color" class="color"></span>
-				<span><button type="submit">Join the arena</button></span>
+				<span><button class="btnPlay" type="submit">Join the arena</button></span>
 			</form>
+
+			
 		</article>
 		<article class="replay">
 			<p id="score"></p>

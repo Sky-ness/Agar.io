@@ -14,6 +14,12 @@ canvas {
   border-radius: 15px;
 }
 
+.nav{
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .character {
   top: 50%;
   left: 50%;
@@ -36,6 +42,14 @@ canvas {
 .score {
   top: 30px;
   right: 30px;
+  color: white;
+  padding: 15px;
+}
+
+.scoreView{
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: white;
   padding: 15px;
 }
