@@ -16,6 +16,9 @@ export class Maps {
 		//invincibilité
 		setTimeout(() => (player.isFeedable = true), 3000);
 	}
+	addFood(blob: Blob){
+		this.foods.push(blob);
+	}
 	getPlayer(id: string) { 
 		return this.players.find(player => player.id == id)!;
 	}
@@ -52,7 +55,6 @@ export class Maps {
 	}
 	randomFood(foodsMax: number) {
 		while (this.foods.length < foodsMax) {
-			for (let i = 0; i <= generateRandomNumber(0, 10); i++) {
 				this.foods.push(
 					new Blob(
 						randomColor(),
@@ -60,8 +62,7 @@ export class Maps {
 						generateRandomNumber(0, this.height),
 						10
 					)
-				);
-			}
+				)
 		}
 	}
 }

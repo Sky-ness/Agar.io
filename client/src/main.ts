@@ -79,7 +79,8 @@ function initSocketEvent() {
 	socket.on('retry', (score) => {
 		replayView.show();
 		window.clearInterval(interId);
-		replayView.score.innerHTML = `Votre score : ${score} <br> Votre temps de survie : ${timer} secondes`;
+		const pointsVole = score -20;
+		replayView.score.innerHTML = `Votre score : ${score}<br>Le nombre de points volé : ${pointsVole} <br> Votre temps de survie : ${timer} secondes`;
 		creditsView.show();
 		resetZoom();
 	});

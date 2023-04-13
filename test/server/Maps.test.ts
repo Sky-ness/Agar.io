@@ -1,15 +1,19 @@
 import { expect } from '@jest/globals';
 import { Maps } from "../../server/class/Maps";
 import { Player } from '../../server/class/Player';
+import { randomColor } from '../../server/function/random';
+import { Blob } from '../../server/class/Blob';
 
-let m = new Maps(500,600);
-let p1 = new Player('1',"heisenberg","red",600,700,30);
-let p2 = new Player('2',"skyler","blue",30,30,20);
+let m:Maps;
+let p1:Player
+let p2:Player;
+let blob: Blob;
 
 beforeEach(() => {
     m = new Maps(500,600);
     p1 = new Player('1',"heisenberg","red",30,30,20);
     p2 = new Player('2',"skyler","blue",30,30,20);
+
 });
 
 describe('Maps created with good dimension', () => {
@@ -56,38 +60,65 @@ describe('We can sort each player on the map with his score', () => {
 });
 describe('player was out of bounds', () => {
     test('player 1 was out of bounds on X position', () => {
-        expect(m.outOfBoundsX(m.players[0])).toBe(true);
+        m.addPlayer(p1);
+        m.addPlayer(p2);
+        expect(m.outOfBoundsX(m.players[0])).toBe(false);
         m.players[0].x = -100 ;
         expect(m.outOfBoundsX(m.players[0])).toBe(true);
-        m.players[0].x = 300 ;
-        expect(m.outOfBoundsX(m.players[0])).toBe(false);
+        m.players[0].x = 600 ;
+        expect(m.outOfBoundsX(m.players[0])).toBe(true);
     });
     test('player 2 was out of bounds on Y position', () => {
-        expect(m.outOfBoundsY(m.players[0])).toBe(true);
+        m.addPlayer(p1);
+        m.addPlayer(p2);
+        expect(m.outOfBoundsY(m.players[0])).toBe(false);
         m.players[0].y = -100 ;
         expect(m.outOfBoundsY(m.players[0])).toBe(true);
-        m.players[0].y = 300 ;
-        expect(m.outOfBoundsY(m.players[0])).toBe(false);
+        m.players[0].y = 600 ;
+        expect(m.outOfBoundsY(m.players[0])).toBe(true);
     });
 });
-// describe('random foods spawn with good number', () => {
-//     test('200 foods are generate', () => {
-//         expect(          ).toBe(          );
-//         expect(          ).toBe(          );
-//     });
-//     test('50 foods are generate', () => {
-//         expect(           ).toBe(          );
-//         expect(          ).toBe(         );
-//     });
-// });
-// describe('You can be feed on the map', () => {
-//     test('player 1 can eat player 2', () => {
-//         expect(          ).toBe(          );
-//         expect(          ).toBe(          );
-//     });
-//     test('player 1 can eat food', () => {
-//         expect(           ).toBe(          );
-//         expect(          ).toBe(         );
-//     });
-// });
+describe('random foods spawn with good number', () => {
+    test('200 foods are generate', () => {
+        m.randomFood(200);
+        expect(m.foods.length).toBe(200);
+        
+    });
+    test('50 foods are generate', () => {
+        m.randomFood(50);
+        expect(m.foods.length).toBe(50);
+    });
+});
+describe('You can be feed on the map', () => {
+    test('player 1 can eat player 2', () => {
+        m.addPlayer(p1);
+        m.addPlayer(p2);
+        p2.isFeedable = true;
+        p1.score = 70;
+        expect(m.feed(p1,p2)).toBe(true);
+    });
+    test(`Player 2 can't eat player 1`, () => {
 
+        m.addPlayer(p1);
+        p1.isFeedable = true;
+        p1.score = 70;
+        expect(m.feed(p2,p1)).toBe(false);
+    });
+    
+});
+
+describe('We can get a player', () => {
+    test('get player 1', () => {
+        m.addPlayer(p1);
+        expect(m.getPlayer(p1.id)).toBe(p1);
+    });
+    test(`we can remove a food and add food`, () => {
+        blob = new Blob(randomColor(),
+        10,10,10);
+        m.addFood(blob);
+        expect(m.foods.length).toBe(1);
+        m.removeFood(blob)
+        expect(m.foods.length).toBe(0);
+    });
+    
+});

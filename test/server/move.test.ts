@@ -55,13 +55,25 @@ describe('move player in a different direction', () => {
     })
 });
 describe('player can t move out of maps', () => {
-    test('rigth and bottom limit of the map', () => {
-        m.players[2].vector = new Vector(p1,{x: 1600,y: 1600});
+    test('rigth limit of the map', () => {
+        m.players[2].vector = new Vector(p1,{x: 1600,y: 1500});
         move(m.players[2],m)
         expect(m.players[2].x).toBe(1500);
         expect(m.players[2].y).toBe(1500);
         });
-    test('left and top limit of the map', () => {
+    test('left limit of the map', () => {
+        m.players[1].vector = new Vector(p1,{x: -50,y: 0});
+        move(m.players[1],m)
+        expect(m.players[1].x).toBe(0);
+        expect(m.players[1].y).toBe(0);
+    });
+    test('top limit of the map', () => {
+        m.players[1].vector = new Vector(p1,{x: 0,y: -50});
+        move(m.players[1],m)
+        expect(m.players[1].x).toBe(0);
+        expect(m.players[1].y).toBe(0);
+    });
+    test('limit bottom of the map', () => {
         m.players[1].vector = new Vector(p1,{x: -50,y: -50});
         move(m.players[1],m)
         expect(m.players[1].x).toBe(0);
