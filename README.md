@@ -42,4 +42,4 @@ On pourrait ajouter plus de fonctionnalité a notre jeu pour qu'ils soient plus 
 
 ## Ce dont nous sommes le plus fier
 
-Nous sommes assez fier de l'aspect global de notre code assez bine réparti et compréhensible il est assez facile d'implémenter de nouvelles fonctionnalitées dans chaque vues et même coté serveur c'est assez compréhensible. 
+Nous sommes assez fier de l'aspect global de notre code assez bien réparti et compréhensible il est assez facile d'implémenter de nouvelles fonctionnalitées dans chaque vues et même coté serveur c'est assez compréhensible. 
